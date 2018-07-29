@@ -16,13 +16,24 @@ namespace BeatMerge
 
         private void btnMerge_Click(object sender, EventArgs e)
         {
-            string jsonBeginningFile = GetFileName(txtJsonBegin.Text, cmbDiffBegin.Text);
-            string jsonEndFile = GetFileName(txtJsonEnd.Text, cmbDiffBegin.Text);
+            string jsonBeginningFile = GetFileName(txtJsonBegin.Text, cmbDifficulty.Text);
+            string jsonEndFile = GetFileName(txtJsonEnd.Text, cmbDifficulty.Text);
 
             Map beginMap = JsonHelper.LoadMap(jsonBeginningFile);
             Map endMap = JsonHelper.LoadMap(jsonEndFile);
 
-            CreateMergedMapFile(beginMap, endMap);
+            if (beginMap != null && endMap != null)
+            {
+                try
+                {
+                    CreateMergedMapFile(beginMap, endMap);
+                    MessageBox.Show("Successfully created " + cmbDifficulty.Text + ".json at " + txtOutput.Text + "!");
+                }
+                catch
+                {
+                    MessageBox.Show("Oops, something went wrong.");
+                }
+            }
         }
 
         private void CreateMergedMapFile(Map beginMap, Map endMap)
@@ -30,7 +41,7 @@ namespace BeatMerge
             Map mergedMap = Map.GetMergedMap(beginMap, endMap);
             string json = JsonConvert.SerializeObject(mergedMap);
 
-            string filename = txtOutput.Text + "\\" + cmbDiffBegin.Text + ".json";
+            string filename = txtOutput.Text + "\\" + cmbDifficulty.Text + ".json";
             using (StreamWriter wr = new StreamWriter(filename))
             {
                 wr.WriteLine(json);

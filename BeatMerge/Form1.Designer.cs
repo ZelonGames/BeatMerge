@@ -33,7 +33,7 @@
             this.txtJsonEnd = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.cmbDiffBegin = new System.Windows.Forms.ComboBox();
+            this.cmbDifficulty = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.txtOutput = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
@@ -80,20 +80,20 @@
             this.label2.TabIndex = 4;
             this.label2.Text = "End Map Folder Name";
             // 
-            // cmbDiffBegin
+            // cmbDifficulty
             // 
-            this.cmbDiffBegin.FormattingEnabled = true;
-            this.cmbDiffBegin.Items.AddRange(new object[] {
+            this.cmbDifficulty.FormattingEnabled = true;
+            this.cmbDifficulty.Items.AddRange(new object[] {
             "Easy",
             "Normal",
             "Hard",
             "Expert",
             "ExpertPlus"});
-            this.cmbDiffBegin.Location = new System.Drawing.Point(600, 120);
-            this.cmbDiffBegin.Name = "cmbDiffBegin";
-            this.cmbDiffBegin.Size = new System.Drawing.Size(121, 21);
-            this.cmbDiffBegin.TabIndex = 6;
-            this.cmbDiffBegin.Text = "Difficulty";
+            this.cmbDifficulty.Location = new System.Drawing.Point(600, 120);
+            this.cmbDifficulty.Name = "cmbDifficulty";
+            this.cmbDifficulty.Size = new System.Drawing.Size(121, 21);
+            this.cmbDifficulty.TabIndex = 6;
+            this.cmbDifficulty.Text = "Difficulty";
             // 
             // label3
             // 
@@ -118,14 +118,14 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.txtOutput);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.cmbDiffBegin);
+            this.Controls.Add(this.cmbDifficulty);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtJsonEnd);
             this.Controls.Add(this.txtJsonBegin);
             this.Controls.Add(this.btnMerge);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Beat Merge";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -138,7 +138,7 @@
         private System.Windows.Forms.TextBox txtJsonEnd;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox cmbDiffBegin;
+        private System.Windows.Forms.ComboBox cmbDifficulty;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtOutput;
     }
