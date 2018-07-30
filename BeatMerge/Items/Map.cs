@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Windows.Forms;
+using System.IO;
 using System.Linq;
 using System.Collections.Generic;
-
+using Newtonsoft.Json;
 
 namespace BeatMerge.Items
 {
@@ -33,12 +35,49 @@ namespace BeatMerge.Items
             this._obstacles = obstacles;
         }
 
+        public static void CreateMap(string filename, Map map)
+        {
+            string json = JsonConvert.SerializeObject(map);
+
+            try
+            {
+                using (StreamWriter wr = new StreamWriter(filename))
+                {
+                    wr.WriteLine(json);
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.ToString());                
+            }
+        }
+
+        public static void CreateMergedMapFile(Form1 form, Map beginMap, Map endMap)
+        {
+            Map mergedMap = Map.GetMergedMap(beginMap, endMap);
+            string json = JsonConvert.SerializeObject(mergedMap);
+
+            string filename = BrowseHelper.BrowseDialog() + "\\" + form.cmbDifficulty.Text + ".json";
+
+            try
+            {
+                using (StreamWriter wr = new StreamWriter(filename))
+                {
+                    wr.WriteLine(json);
+                }
+
+                MessageBox.Show("Successfully created " + form.cmbDifficulty.Text + ".json at " + filename + "!");
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
         public static Map GetMergedMap(Map mapBegin, Map mapEnd)
         {
-            double timeDifference = GetTimeDifference(mapBegin, mapEnd);
-            MoveItemsTowardsMarker(mapEnd, timeDifference);
-
-            mapEnd.StretchToNewBPM(mapBegin);
+            MoveItemsTowardsMarker(mapBegin, mapEnd);
+            mapEnd.StretchToNewBPM(mapBegin._beatsPerMinute);
 
             List<Event> newEvents = mapBegin._events.ToList();
             List<Note> newNotes = mapBegin._notes.ToList();
@@ -60,24 +99,31 @@ namespace BeatMerge.Items
                 newEvents.ToArray(), newNotes.ToArray(), newObstacles.ToArray());
         }
 
-        private static void MoveItemsTowardsMarker(Map map, double timeDifference)
+        public static void MoveItems(Map map, double distance)
         {
             foreach (var endEvent in map._events)
-                endEvent._time -= timeDifference;
+                endEvent._time += distance;
             foreach (var endNote in map._notes)
-                endNote._time -= timeDifference;
+                endNote._time += distance;
             foreach (var endObstacle in map._obstacles)
-                endObstacle._time -= timeDifference;
+                endObstacle._time += distance;
         }
 
-        private void StretchToNewBPM(Map newMap)
+        private static void MoveItemsTowardsMarker(Map mapBegin, Map mapEnd)
+        {
+            double timeDifference = GetTimeDifference(mapBegin, mapEnd);
+
+            MoveItems(mapEnd, -timeDifference);
+        }
+
+        public void StretchToNewBPM(double newBPM)
         {
             foreach (var obstacle in _obstacles)
                 obstacle.ClosestNote = obstacle.GetClosestNote(_notes);
             foreach (var _event in _events)
                 _event.ClosestNote = _event.GetClosestNote(_notes);
 
-            double comparedBPM = _beatsPerMinute / newMap._beatsPerMinute;
+            double comparedBPM = _beatsPerMinute / newBPM;
 
             var groupedNotes = GetGroupedItems<Note>(_notes);
 

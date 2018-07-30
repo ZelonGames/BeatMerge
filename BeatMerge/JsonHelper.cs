@@ -20,7 +20,7 @@ namespace BeatMerge
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error: Could not find the file.");
+                MessageBox.Show(ex.ToString());
                 return null;
             }
         }
