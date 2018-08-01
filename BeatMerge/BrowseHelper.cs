@@ -9,6 +9,8 @@ namespace BeatMerge
             var currentTextBox = (TextBox)sender;
             var folderDialog = new FolderBrowserDialog();
             folderDialog.ShowNewFolderButton = false;
+            if (Form1.BasePath != null)
+                folderDialog.SelectedPath = Form1.BasePath;
 
             DialogResult result = folderDialog.ShowDialog();
 
@@ -19,6 +21,9 @@ namespace BeatMerge
         {
             var folderDialog = new FolderBrowserDialog();
             folderDialog.ShowNewFolderButton = false;
+
+            if (Form1.BasePath != null)
+                folderDialog.SelectedPath = Form1.BasePath;
 
             DialogResult result = folderDialog.ShowDialog();
 

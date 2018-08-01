@@ -9,6 +9,9 @@ namespace BeatMerge.Items
 {
     public class Map
     {
+        [JsonIgnore]
+        public SongInfo SongInfo { get; set; }
+
         public string _version { get; set; }
         public double _beatsPerMinute { get; set; }
         public double _beatsPerBar { get; set; }
@@ -46,18 +49,18 @@ namespace BeatMerge.Items
                     wr.WriteLine(json);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());                
+                MessageBox.Show(ex.ToString());
             }
         }
 
-        public static void CreateMergedMapFile(Form1 form, Map beginMap, Map endMap)
+        public static void CreateMergedMapFile(Map beginMap, Map endMap)
         {
             Map mergedMap = Map.GetMergedMap(beginMap, endMap);
             string json = JsonConvert.SerializeObject(mergedMap);
 
-            string filename = BrowseHelper.BrowseDialog() + "\\" + form.cmbDifficulty.Text + ".json";
+            string filename = BrowseHelper.BrowseDialog() + "\\" + Form1.Difficulty + ".json";
 
             try
             {
@@ -66,9 +69,9 @@ namespace BeatMerge.Items
                     wr.WriteLine(json);
                 }
 
-                MessageBox.Show("Successfully created " + form.cmbDifficulty.Text + ".json at " + filename + "!");
+                MessageBox.Show("Successfully created " + Form1.Difficulty + ".json at " + filename + "!");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
             }
@@ -76,7 +79,23 @@ namespace BeatMerge.Items
 
         public static Map GetMergedMap(Map mapBegin, Map mapEnd)
         {
-            MoveItemsTowardsMarker(mapBegin, mapEnd);
+            //MoveItemsTowardsMarker(mapBegin, mapEnd);
+
+            double mapBeginStartOffset = GetMSInBeats(mapBegin._beatsPerMinute, mapBegin.SongInfo.GetOffset(Form1.Difficulty));
+            double mapEndStartOffset = GetMSInBeats(mapEnd._beatsPerMinute, mapEnd.SongInfo.GetOffset(Form1.Difficulty));
+
+            double mapBeginBeatLength = GetBeatLengthInMS(mapBegin._beatsPerMinute);
+            double mapEndBeatLength = GetBeatLengthInMS(mapEnd._beatsPerMinute);
+
+            double comparedBeatLength = mapBeginBeatLength / mapEndBeatLength;
+
+            double mapEndFirstNoteTime = mapEnd._notes.First()._time;
+
+            double meassuredOffset = mapBeginStartOffset - mapEndStartOffset;
+
+            double moveDistance = mapEndFirstNoteTime - mapEndFirstNoteTime / comparedBeatLength + GetMSInBeats(mapBegin._beatsPerMinute, meassuredOffset);
+            MoveItems(mapEnd, -moveDistance);
+
             mapEnd.StretchToNewBPM(mapBegin._beatsPerMinute);
 
             List<Event> newEvents = mapBegin._events.ToList();
@@ -84,7 +103,7 @@ namespace BeatMerge.Items
             List<Obstacle> newObstacles = mapBegin._obstacles.ToList();
 
             // Remove the last note that's used as a marker
-            newNotes.Remove(newNotes.Last());
+            //newNotes.Remove(newNotes.Last());
 
             foreach (var mergeEvent in mapEnd._events)
                 newEvents.Add(mergeEvent);
@@ -95,8 +114,12 @@ namespace BeatMerge.Items
             foreach (var mergeObstacle in mapEnd._obstacles)
                 newObstacles.Add(mergeObstacle);
 
+            var events = newEvents.OrderBy(x => x._time).ToArray();
+            var notes = newNotes.OrderBy(x => x._time).ToArray();
+            var obstacles = newObstacles.OrderBy(x => x._time).ToArray();
+
             return new Map(mapBegin._version, mapBegin._beatsPerMinute, mapBegin._beatsPerBar, mapBegin._noteJumpSpeed, mapBegin._shuffle, mapBegin._shufflePeriod,
-                newEvents.ToArray(), newNotes.ToArray(), newObstacles.ToArray());
+                events, notes, obstacles);
         }
 
         public static void MoveItems(Map map, double distance)
@@ -119,11 +142,11 @@ namespace BeatMerge.Items
         public void StretchToNewBPM(double newBPM)
         {
             foreach (var obstacle in _obstacles)
-                obstacle.ClosestNote = obstacle.GetClosestNote(_notes);
+                obstacle.SetClosestNote(_notes);
             foreach (var _event in _events)
-                _event.ClosestNote = _event.GetClosestNote(_notes);
+                _event.SetClosestNote(_notes);
 
-            double comparedBPM = _beatsPerMinute / newBPM;
+            double comparedBPM = newBPM / _beatsPerMinute;
 
             var groupedNotes = GetGroupedItems<Note>(_notes);
 
@@ -134,7 +157,7 @@ namespace BeatMerge.Items
 
                 double distance = currentGroup.First()._time - prevGroup.First()._time;
 
-                double distanceToMove = distance - (distance / comparedBPM);
+                double distanceToMove = distance - (distance * comparedBPM);
                 currentGroup.ForEach(x => x._time -= distanceToMove);
 
                 for (int j = i + 1; j < groupedNotes.Count; j++)
@@ -149,7 +172,7 @@ namespace BeatMerge.Items
                 double newOffset = obstacle._time - obstacle.ClosestNote._time;
                 obstacle._time -= newOffset - obstacle.NoteOffset;
             }
-            foreach(var _event in _events)
+            foreach (var _event in _events)
             {
                 double newOffset = _event._time - _event.ClosestNote._time;
                 _event._time -= newOffset - _event.NoteOffset;
@@ -190,6 +213,20 @@ namespace BeatMerge.Items
             Note firstEndNote = mapEnd._notes.First();
 
             return firstEndNote._time - lastBeginNote._time;
+        }
+
+        public static double GetNewStartOffset(Map map, double newBPM)
+        {
+            var startOffset = map._notes.First()._time;
+            return startOffset * (newBPM / map._beatsPerMinute) - startOffset;
+        }
+        public static double GetMSInBeats(double bpm, double ms)
+        {
+            return (bpm / 60000) * ms;
+        }
+        public static double GetBeatLengthInMS(double bpm)
+        {
+            return 60000d / bpm;
         }
     }
 }

@@ -3,9 +3,9 @@ namespace BeatMerge.Items
 {
     public class Note : ItemBase
     {
-        public int _lineIndex { get; set; }
-        public int _lineLayer { get; set; }
-        public int _type { get; set; }
-        public int _cutDirection { get; set; }
+        public double _lineIndex { get; set; }
+        public double _lineLayer { get; set; }
+        public double _type { get; set; }
+        public double _cutDirection { get; set; }
     }
 }

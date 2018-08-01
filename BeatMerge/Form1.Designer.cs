@@ -38,15 +38,21 @@
             this.grpBPM = new System.Windows.Forms.GroupBox();
             this.txtNewBPM = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.txtJsonFile = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.btnChangeBPM = new System.Windows.Forms.Button();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.mergeSongsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeBPMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.txtJsonFile = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtSettings = new System.Windows.Forms.TextBox();
+            this.grpSettings = new System.Windows.Forms.GroupBox();
+            this.btnSave = new System.Windows.Forms.Button();
             this.grpMerge.SuspendLayout();
             this.grpBPM.SuspendLayout();
             this.menuStrip.SuspendLayout();
+            this.grpSettings.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnMerge
@@ -167,8 +173,29 @@
             this.label5.TabIndex = 4;
             this.label5.Text = "New BPM";
             // 
+            // txtJsonFile
+            // 
+            this.txtJsonFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtJsonFile.Location = new System.Drawing.Point(104, 32);
+            this.txtJsonFile.Name = "txtJsonFile";
+            this.txtJsonFile.Size = new System.Drawing.Size(621, 20);
+            this.txtJsonFile.TabIndex = 3;
+            this.txtJsonFile.MouseClick += new System.Windows.Forms.MouseEventHandler(this.textBox1_MouseClick);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(18, 35);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(48, 13);
+            this.label4.TabIndex = 2;
+            this.label4.Text = ".json File";
+            // 
             // btnChangeBPM
             // 
+            this.btnChangeBPM.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnChangeBPM.Location = new System.Drawing.Point(21, 109);
             this.btnChangeBPM.Name = "btnChangeBPM";
             this.btnChangeBPM.Size = new System.Drawing.Size(704, 23);
@@ -180,6 +207,7 @@
             // menuStrip
             // 
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.settingsToolStripMenuItem,
             this.mergeSongsToolStripMenuItem,
             this.changeBPMToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
@@ -202,28 +230,63 @@
             this.changeBPMToolStripMenuItem.Text = "Change BPM";
             this.changeBPMToolStripMenuItem.Click += new System.EventHandler(this.changeBPMToolStripMenuItem_Click);
             // 
-            // txtJsonFile
+            // settingsToolStripMenuItem
             // 
-            this.txtJsonFile.Location = new System.Drawing.Point(104, 32);
-            this.txtJsonFile.Name = "txtJsonFile";
-            this.txtJsonFile.Size = new System.Drawing.Size(621, 20);
-            this.txtJsonFile.TabIndex = 3;
-            this.txtJsonFile.MouseClick += new System.Windows.Forms.MouseEventHandler(this.textBox1_MouseClick);
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.settingsToolStripMenuItem.Text = "Settings";
+            this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
-            // label4
+            // label3
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(18, 35);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(48, 13);
-            this.label4.TabIndex = 2;
-            this.label4.Text = ".json File";
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(18, 47);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(56, 13);
+            this.label3.TabIndex = 12;
+            this.label3.Text = "Base Path";
+            // 
+            // txtSettings
+            // 
+            this.txtSettings.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtSettings.Location = new System.Drawing.Point(104, 44);
+            this.txtSettings.Name = "txtSettings";
+            this.txtSettings.Size = new System.Drawing.Size(621, 20);
+            this.txtSettings.TabIndex = 13;
+            this.txtSettings.MouseClick += new System.Windows.Forms.MouseEventHandler(this.txtSettings_MouseClick);
+            // 
+            // grpSettings
+            // 
+            this.grpSettings.Controls.Add(this.btnSave);
+            this.grpSettings.Controls.Add(this.txtSettings);
+            this.grpSettings.Controls.Add(this.label3);
+            this.grpSettings.Location = new System.Drawing.Point(12, 449);
+            this.grpSettings.Name = "grpSettings";
+            this.grpSettings.Size = new System.Drawing.Size(746, 124);
+            this.grpSettings.TabIndex = 14;
+            this.grpSettings.TabStop = false;
+            this.grpSettings.Text = "Settings";
+            this.grpSettings.Visible = false;
+            // 
+            // btnSave
+            // 
+            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSave.Location = new System.Drawing.Point(21, 95);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(704, 23);
+            this.btnSave.TabIndex = 15;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(790, 434);
+            this.ClientSize = new System.Drawing.Size(790, 629);
+            this.Controls.Add(this.grpSettings);
             this.Controls.Add(this.grpBPM);
             this.Controls.Add(this.grpMerge);
             this.Controls.Add(this.menuStrip);
@@ -238,6 +301,8 @@
             this.grpBPM.PerformLayout();
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
+            this.grpSettings.ResumeLayout(false);
+            this.grpSettings.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -261,6 +326,11 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txtJsonFile;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtSettings;
+        public System.Windows.Forms.GroupBox grpSettings;
+        private System.Windows.Forms.Button btnSave;
     }
 }
 

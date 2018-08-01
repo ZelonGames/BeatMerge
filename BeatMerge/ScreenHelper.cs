@@ -11,6 +11,7 @@ namespace BeatMerge
     {
         public static Dictionary<string, GroupBox> screens { get; private set; }
 
+        public static readonly string screenSettings = "Settings";
         public static readonly string screenMergeSong = "MergeSong";
         public static readonly string screenChangeBPM = "ChangeBPM";
 
@@ -18,6 +19,7 @@ namespace BeatMerge
         {
             screens = new Dictionary<string, GroupBox>();
 
+            screens.Add(screenSettings, form.grpSettings);
             screens.Add(screenMergeSong, form.grpMerge);
             screens.Add(screenChangeBPM, form.grpBPM);
         }

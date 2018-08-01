@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace BeatMerge.Items
 {
     public abstract class ItemBase
     {
-        public Note ClosestNote { get; set; }
+        [JsonIgnore]
+        public Note ClosestNote { get; private set; }
+        [JsonIgnore]
         public double NoteOffset { get; private set; }
         public double _time { get; set; }
 
-        public Note GetClosestNote(Note[] notes)
+        public void SetClosestNote(Note[] notes)
         {
             Note closestNote = notes[0];
 
@@ -26,7 +29,7 @@ namespace BeatMerge.Items
 
             NoteOffset = _time - closestNote._time;
 
-            return closestNote;
+            ClosestNote = closestNote;
         }
     }
 }
