@@ -195,11 +195,6 @@ namespace BeatMerge.Items
             return groupedItemsList;
         }
 
-        public static double GetNewStartOffset(Map map, double newBPM)
-        {
-            var startOffset = map._notes.First()._time;
-            return startOffset * (newBPM / map._beatsPerMinute) - startOffset;
-        }
         public static double GetMSInBeats(double bpm, double ms)
         {
             return (bpm / 60000) * ms;
