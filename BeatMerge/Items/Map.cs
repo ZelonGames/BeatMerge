@@ -79,8 +79,6 @@ namespace BeatMerge.Items
 
         public static Map GetMergedMap(Map mapBegin, Map mapEnd)
         {
-            //MoveItemsTowardsMarker(mapBegin, mapEnd);
-
             double mapBeginStartOffset = GetMSInBeats(mapBegin._beatsPerMinute, mapBegin.SongInfo.GetOffset(Form1.Difficulty));
             double mapEndStartOffset = GetMSInBeats(mapEnd._beatsPerMinute, mapEnd.SongInfo.GetOffset(Form1.Difficulty));
 
@@ -101,9 +99,6 @@ namespace BeatMerge.Items
             List<Event> newEvents = mapBegin._events.ToList();
             List<Note> newNotes = mapBegin._notes.ToList();
             List<Obstacle> newObstacles = mapBegin._obstacles.ToList();
-
-            // Remove the last note that's used as a marker
-            //newNotes.Remove(newNotes.Last());
 
             foreach (var mergeEvent in mapEnd._events)
                 newEvents.Add(mergeEvent);
@@ -131,14 +126,7 @@ namespace BeatMerge.Items
             foreach (var endObstacle in map._obstacles)
                 endObstacle._time += distance;
         }
-
-        private static void MoveItemsTowardsMarker(Map mapBegin, Map mapEnd)
-        {
-            double timeDifference = GetTimeDifference(mapBegin, mapEnd);
-
-            MoveItems(mapEnd, -timeDifference);
-        }
-
+        
         public void StretchToNewBPM(double newBPM)
         {
             foreach (var obstacle in _obstacles)
@@ -205,14 +193,6 @@ namespace BeatMerge.Items
             }
 
             return groupedItemsList;
-        }
-
-        public static double GetTimeDifference(Map mapBegin, Map mapEnd)
-        {
-            Note lastBeginNote = mapBegin._notes.Last();
-            Note firstEndNote = mapEnd._notes.First();
-
-            return firstEndNote._time - lastBeginNote._time;
         }
 
         public static double GetNewStartOffset(Map map, double newBPM)
