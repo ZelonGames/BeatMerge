@@ -9,28 +9,7 @@ namespace BeatMerge.Items
 {
     public abstract class ItemBase
     {
-        [JsonIgnore]
-        public Note ClosestNote { get; private set; }
-        [JsonIgnore]
-        public double NoteOffset { get; private set; }
         public double _time { get; set; }
-
-        public void SetClosestNote(Note[] notes)
-        {
-            Note closestNote = notes[0];
-
-            for (int i = 1; i < notes.Length; i++)
-            {
-                Note currentNote = notes[i];
-
-                if (Math.Abs(_time - currentNote._time) < Math.Abs(_time - closestNote._time))
-                    closestNote = currentNote;
-            }
-
-            NoteOffset = _time - closestNote._time;
-
-            ClosestNote = closestNote;
-        }
 
         public static void ConvertItemBeatsToSeconds<T>(T[] items, List<T> mergedItems, double bpm) where T : ItemBase
         {
