@@ -100,7 +100,7 @@ namespace BeatMerge
 
         private void btnMerge_Click(object sender, EventArgs e)
         {
-            if (listMap.SelectedIndex <= 0)
+            if (listMap.SelectedIndex < 0)
                 return;
 
             double newBPM = 0;
