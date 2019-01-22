@@ -60,7 +60,6 @@
     <Compile Include="Items\Note.cs" />
     <Compile Include="Items\Obstacle.cs" />
     <Compile Include="Items\SongInfo.cs" />
-    <Compile Include="JsonHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
