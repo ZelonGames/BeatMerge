@@ -64,6 +64,9 @@ namespace BeatMerge
 
         private void btnDeleteSongPack_Click(object sender, EventArgs e)
         {
+            if (listSongPacks.SelectedIndex < 0)
+                return;
+
             SongPack selectedSongPack = songPacks[listSongPacks.SelectedIndex];
             if (Directory.Exists(selectedSongPack.Path))
             {
@@ -97,6 +100,9 @@ namespace BeatMerge
 
         private void btnMerge_Click(object sender, EventArgs e)
         {
+            if (listMap.SelectedIndex <= 0)
+                return;
+
             double newBPM = 0;
             try
             {
