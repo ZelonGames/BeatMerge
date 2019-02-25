@@ -23,7 +23,7 @@ namespace BeatMerge.Items
         public static void ConvertItemSecondsToBeats<T>(List<T> items, double bpm) where T : ItemBase
         {
             foreach (var item in items)
-                item._time = Map.GetSecondsInBeats(bpm, item._time);
+                item._time = Map.GetSecondsInBeats(bpm, item._time); 
         }
     }
 }
