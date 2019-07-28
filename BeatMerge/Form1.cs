@@ -2,6 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.VisualBasic;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using BeatMerge.Items;
@@ -15,6 +16,7 @@ namespace BeatMerge
         public const string songPackFolder = "SongPacks";
 
         private string SelectedSongPackName => listSongPacks.Items[listSongPacks.SelectedIndex].ToString();
+        private string SelectedTimeStamp => lstTimeStamps.Items[lstTimeStamps.SelectedIndex].ToString().Split(' ')[0];
 
         public Form1()
         {
@@ -34,7 +36,9 @@ namespace BeatMerge
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 if (openFileDialog.FileName.EndsWith(".json"))
-                    listMap.Items.Add(new MapFile(openFileDialog.FileName, SelectedSongPackName, true).DisplayName);
+                {
+                    songPacks[listSongPacks.SelectedIndex].AddMap(openFileDialog.FileName, SelectedSongPackName, true, listMap, lstTimeStamps);
+                }
                 else
                     MessageBox.Show("You must select a .json file!");
             }
@@ -56,10 +60,13 @@ namespace BeatMerge
 
         private void listSongPacks_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (listSongPacks.SelectedIndex < 0)
+                return;
+
             grpMaps.Visible = true;
 
             SongPack selectedSongPack = songPacks[listSongPacks.SelectedIndex];
-            selectedSongPack.ReLoadMapFiles(listMap);
+            selectedSongPack.ReLoadMapFiles(listMap, lstTimeStamps);
         }
 
         private void btnDeleteSongPack_Click(object sender, EventArgs e)
@@ -82,6 +89,26 @@ namespace BeatMerge
             grpMaps.Visible = false;
         }
 
+        private void lstTimeStamps_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+
+            string input = Interaction.InputBox("Type in the time where this song should start in milliseconds", "Timestamp", SelectedTimeStamp);
+            if (input.Length > 0)
+            {
+                try
+                {
+                    double timestamp = Convert.ToDouble(input);
+                    lstTimeStamps.Items[lstTimeStamps.SelectedIndex] = timestamp + " ms";
+                    songPacks[listSongPacks.SelectedIndex].MapFiles[lstTimeStamps.SelectedIndex].StartTimeInMS = timestamp;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                }
+            }
+
+        }
+
         private void btnDeleteMap_Click(object sender, EventArgs e)
         {
             try
@@ -93,7 +120,7 @@ namespace BeatMerge
                 else
                     MessageBox.Show("This map doesn't exist!");
 
-                selectedSongPack.ReLoadMapFiles(listMap);
+                selectedSongPack.ReLoadMapFiles(listMap, lstTimeStamps);
             }
             catch { }
         }
@@ -117,7 +144,7 @@ namespace BeatMerge
             var mergedObstacles = new List<Obstacle>();
 
             SongPack currentSongPack = songPacks[listSongPacks.SelectedIndex];
-            currentSongPack.ReLoadMapFiles(listMap);
+            //currentSongPack.ReLoadMapFiles(listMap, lstTimeStamps);
 
             foreach (var mapFile in currentSongPack.MapFiles)
             {
@@ -126,6 +153,15 @@ namespace BeatMerge
 
                 if (!noteJumpSpeed.HasValue)
                     noteJumpSpeed = currentMap._noteJumpSpeed;
+
+                if (checkBox1.Checked && mapFile.StartTimeInMS.HasValue)
+                {
+                    double jumpDistance = Map.MSToBeats(currentMap._beatsPerMinute, mapFile.StartTimeInMS.Value) - currentMap.GetFirstItemTimestamp();
+
+                    ItemBase.MoveItems(currentMap._notes, currentMap._beatsPerMinute, jumpDistance);
+                    ItemBase.MoveItems(currentMap._events, currentMap._beatsPerMinute, jumpDistance);
+                    ItemBase.MoveItems(currentMap._obstacles, currentMap._beatsPerMinute, jumpDistance);
+                }
 
                 ItemBase.ConvertItemBeatsToSeconds(currentMap._events, mergedEvents, currentMap._beatsPerMinute);
                 ItemBase.ConvertItemBeatsToSeconds(currentMap._notes, mergedNotes, currentMap._beatsPerMinute);
@@ -140,7 +176,7 @@ namespace BeatMerge
 
             try
             {
-                string path = currentSongPack.Path + "/Merged.json";
+                string path = "Merged.json";
                 using (StreamWriter wr = new StreamWriter(path))
                     wr.WriteLine(JsonConvert.SerializeObject(mergedMap));
 
@@ -178,6 +214,11 @@ namespace BeatMerge
         }
 
         #endregion
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            lstTimeStamps.Visible = checkBox1.Checked;
+        }
     }
 
     public class SongPack
@@ -195,15 +236,26 @@ namespace BeatMerge
                 Directory.CreateDirectory(path);
         }
 
-        public void ReLoadMapFiles(ListBox listMap)
+        public void AddMap(string filename, string songPackName, bool createFile, ListBox listMap, ListBox lstTimeStamps)
+        {
+            var mapFile = new MapFile(filename, songPackName, createFile);
+            listMap.Items.Add(mapFile.DisplayName);
+            MapFiles.Add(mapFile);
+
+            string jsonData = File.ReadAllText(mapFile.Path);
+            Map currentMap = JsonConvert.DeserializeObject<Map>(jsonData);
+            Map.GetBeatLengthInSeconds(currentMap._beatsPerMinute);
+            lstTimeStamps.Items.Add((Map.BPMToMS(currentMap._beatsPerMinute) * currentMap.GetFirstItemTimestamp()) + " ms");
+        }
+
+        public void ReLoadMapFiles(ListBox listMap, ListBox lstTimeStamps)
         {
             listMap.Items.Clear();
+            lstTimeStamps.Items.Clear();
             MapFiles = new List<MapFile>();
             foreach (var file in Directory.GetFiles(Path))
             {
-                var mapFile = new MapFile(file, DisplayName, false);
-                MapFiles.Add(mapFile);
-                listMap.Items.Add(mapFile.FileName);
+                AddMap(file, DisplayName, false, listMap, lstTimeStamps);
             }
         }
     }
@@ -211,6 +263,8 @@ namespace BeatMerge
     public class MapFile
     {
         public string Path { get; private set; }
+
+        public double? StartTimeInMS = null;
 
         public string FileName => Folders.Last();
 

@@ -43,10 +43,48 @@ namespace BeatMerge.Items
             }
         }
 
-        public static double GetSecondsInBeats(double bpm, double ms)
+        public double GetFirstItemTimestamp()
         {
-            return (bpm / 60) * ms;
+            double? noteTimestamp = null;
+            if (_notes.Length > 0)
+                noteTimestamp = _notes.First()._time;
+
+            double? eventTimeStamp = null;
+            if (_events.Length > 0)
+                eventTimeStamp = _events.First()._time;
+
+            double? obstacleTimeStamp = null;
+            if (_obstacles.Length > 0)
+                obstacleTimeStamp = _obstacles.First()._time;
+
+            var timestamps = new List<double>();
+            if (noteTimestamp.HasValue)
+                timestamps.Add(noteTimestamp.Value);
+            /*
+            if (eventTimeStamp.HasValue)
+                timestamps.Add(eventTimeStamp.Value);
+
+            if (obstacleTimeStamp.HasValue)
+                timestamps.Add(obstacleTimeStamp.Value);*/
+
+            return timestamps.Min();
         }
+
+        public static double SecondsToBeats(double bpm, double seconds)
+        {
+            return seconds / (60 / bpm);
+        }
+
+        public static double MSToBeats(double bpm, double ms)
+        {
+            return ms / (60000 / bpm);
+        }
+
+        public static double BPMToMS(double bpm)
+        {
+            return 60000d / bpm;
+        }
+
         public static double GetBeatLengthInSeconds(double bpm)
         {
             return 60d / bpm;

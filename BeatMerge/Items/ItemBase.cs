@@ -23,7 +23,17 @@ namespace BeatMerge.Items
         public static void ConvertItemSecondsToBeats<T>(List<T> items, double bpm) where T : ItemBase
         {
             foreach (var item in items)
-                item._time = Map.GetSecondsInBeats(bpm, item._time); 
+            {
+                item._time = Map.SecondsToBeats(bpm, item._time);
+            }
+        }
+
+        public static void MoveItems<T>(T[] items, double bpm, double jumpDistance) where T : ItemBase
+        {
+            foreach (var item in items)
+            {
+                item._time += jumpDistance;
+            }
         }
     }
 }

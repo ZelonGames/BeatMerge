@@ -40,6 +40,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.txtNewBpm = new System.Windows.Forms.TextBox();
             this.grpMaps = new System.Windows.Forms.GroupBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.lstTimeStamps = new System.Windows.Forms.ListBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.grpMaps.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -59,7 +62,7 @@
             // btnMerge
             // 
             this.btnMerge.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnMerge.Location = new System.Drawing.Point(245, 393);
+            this.btnMerge.Location = new System.Drawing.Point(134, 393);
             this.btnMerge.Name = "btnMerge";
             this.btnMerge.Size = new System.Drawing.Size(105, 23);
             this.btnMerge.TabIndex = 2;
@@ -74,7 +77,7 @@
             this.listMap.FormattingEnabled = true;
             this.listMap.Location = new System.Drawing.Point(6, 64);
             this.listMap.Name = "listMap";
-            this.listMap.Size = new System.Drawing.Size(344, 303);
+            this.listMap.Size = new System.Drawing.Size(281, 303);
             this.listMap.TabIndex = 3;
             this.listMap.Tag = "";
             // 
@@ -132,7 +135,7 @@
             this.btnDeleteMap.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDeleteMap.Location = new System.Drawing.Point(148, 34);
             this.btnDeleteMap.Name = "btnDeleteMap";
-            this.btnDeleteMap.Size = new System.Drawing.Size(202, 23);
+            this.btnDeleteMap.Size = new System.Drawing.Size(139, 23);
             this.btnDeleteMap.TabIndex = 11;
             this.btnDeleteMap.Text = "Delete Selected Map";
             this.btnDeleteMap.UseVisualStyleBackColor = true;
@@ -142,7 +145,7 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 398);
+            this.label2.Location = new System.Drawing.Point(6, 398);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(58, 13);
             this.label2.TabIndex = 12;
@@ -151,9 +154,9 @@
             // txtNewBpm
             // 
             this.txtNewBpm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtNewBpm.Location = new System.Drawing.Point(67, 395);
+            this.txtNewBpm.Location = new System.Drawing.Point(70, 395);
             this.txtNewBpm.Name = "txtNewBpm";
-            this.txtNewBpm.Size = new System.Drawing.Size(172, 20);
+            this.txtNewBpm.Size = new System.Drawing.Size(58, 20);
             this.txtNewBpm.TabIndex = 13;
             this.txtNewBpm.Text = "120";
             // 
@@ -161,19 +164,55 @@
             // 
             this.grpMaps.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpMaps.Controls.Add(this.checkBox1);
+            this.grpMaps.Controls.Add(this.label3);
+            this.grpMaps.Controls.Add(this.lstTimeStamps);
             this.grpMaps.Controls.Add(this.listMap);
             this.grpMaps.Controls.Add(this.btnAdd);
             this.grpMaps.Controls.Add(this.txtNewBpm);
             this.grpMaps.Controls.Add(this.btnMerge);
             this.grpMaps.Controls.Add(this.label2);
             this.grpMaps.Controls.Add(this.btnDeleteMap);
-            this.grpMaps.Location = new System.Drawing.Point(424, 12);
+            this.grpMaps.Location = new System.Drawing.Point(402, 12);
             this.grpMaps.Name = "grpMaps";
-            this.grpMaps.Size = new System.Drawing.Size(356, 422);
+            this.grpMaps.Size = new System.Drawing.Size(485, 422);
             this.grpMaps.TabIndex = 14;
             this.grpMaps.TabStop = false;
             this.grpMaps.Text = "Maps";
             this.grpMaps.Visible = false;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(293, 388);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(132, 17);
+            this.checkBox1.TabIndex = 16;
+            this.checkBox1.Text = "Use custom start times";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(362, 38);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(54, 13);
+            this.label3.TabIndex = 15;
+            this.label3.Text = "Start time:";
+            // 
+            // lstTimeStamps
+            // 
+            this.lstTimeStamps.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lstTimeStamps.FormattingEnabled = true;
+            this.lstTimeStamps.Location = new System.Drawing.Point(293, 64);
+            this.lstTimeStamps.Name = "lstTimeStamps";
+            this.lstTimeStamps.Size = new System.Drawing.Size(186, 303);
+            this.lstTimeStamps.TabIndex = 14;
+            this.lstTimeStamps.Tag = "";
+            this.lstTimeStamps.Visible = false;
+            this.lstTimeStamps.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lstTimeStamps_MouseDoubleClick);
             // 
             // groupBox2
             // 
@@ -195,11 +234,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(790, 456);
+            this.ClientSize = new System.Drawing.Size(890, 456);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.grpMaps);
             this.MinimumSize = new System.Drawing.Size(806, 296);
             this.Name = "Form1";
+            this.RightToLeftLayout = true;
             this.Text = "Beat Merge";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.grpMaps.ResumeLayout(false);
@@ -224,6 +264,9 @@
         private System.Windows.Forms.TextBox txtNewBpm;
         private System.Windows.Forms.GroupBox grpMaps;
         private System.Windows.Forms.GroupBox groupBox2;
+        public System.Windows.Forms.ListBox lstTimeStamps;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
 
