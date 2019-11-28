@@ -9,25 +9,15 @@ namespace BeatMerge.Items
 {
     public class Map
     {
-        public string _version { get; set; }
         public double _beatsPerMinute { get; set; }
-        public double _beatsPerBar { get; set; }
-        public double _noteJumpSpeed { get; set; }
-        public double _shuffle { get; set; }
-        public double _shufflePeriod { get; set; }
 
         public Event[] _events { get; set; }
         public Note[] _notes { get; set; }
         public Obstacle[] _obstacles { get; set; }
 
-        public Map(double beatsPerMinute, double noteJumpSpeed, Event[] events, Note[] notes, Obstacle[] obstacles)
+        public Map(double beatsPerMinute, Event[] events, Note[] notes, Obstacle[] obstacles)
         {
-            this._version = "1.5.0";
             this._beatsPerMinute = beatsPerMinute;
-            this._beatsPerBar = 16;
-            this._noteJumpSpeed = noteJumpSpeed;
-            this._shuffle = 0;
-            this._shufflePeriod = 0.5;
 
             this._events = events;
             this._notes = notes;

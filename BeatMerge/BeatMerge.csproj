@@ -61,8 +61,10 @@
     <Compile Include="Items\Note.cs" />
     <Compile Include="Items\Obstacle.cs" />
     <Compile Include="Items\SongInfo.cs" />
+    <Compile Include="CustomMap.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SongPack.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

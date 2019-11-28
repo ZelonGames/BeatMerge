@@ -50,10 +50,9 @@
             // 
             // btnAdd
             // 
-            this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAdd.Location = new System.Drawing.Point(6, 35);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(136, 23);
+            this.btnAdd.Size = new System.Drawing.Size(203, 23);
             this.btnAdd.TabIndex = 1;
             this.btnAdd.Text = "Add Map";
             this.btnAdd.UseVisualStyleBackColor = true;
@@ -61,7 +60,6 @@
             // 
             // btnMerge
             // 
-            this.btnMerge.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnMerge.Location = new System.Drawing.Point(134, 393);
             this.btnMerge.Name = "btnMerge";
             this.btnMerge.Size = new System.Drawing.Size(105, 23);
@@ -72,19 +70,17 @@
             // 
             // listMap
             // 
-            this.listMap.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.listMap.FormattingEnabled = true;
             this.listMap.Location = new System.Drawing.Point(6, 64);
             this.listMap.Name = "listMap";
-            this.listMap.Size = new System.Drawing.Size(281, 303);
+            this.listMap.Size = new System.Drawing.Size(335, 303);
             this.listMap.TabIndex = 3;
             this.listMap.Tag = "";
             // 
             // btnAddSongPack
             // 
             this.btnAddSongPack.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddSongPack.Location = new System.Drawing.Point(228, 29);
+            this.btnAddSongPack.Location = new System.Drawing.Point(231, 29);
             this.btnAddSongPack.Name = "btnAddSongPack";
             this.btnAddSongPack.Size = new System.Drawing.Size(150, 23);
             this.btnAddSongPack.TabIndex = 4;
@@ -132,10 +128,9 @@
             // 
             // btnDeleteMap
             // 
-            this.btnDeleteMap.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDeleteMap.Location = new System.Drawing.Point(148, 34);
+            this.btnDeleteMap.Location = new System.Drawing.Point(215, 34);
             this.btnDeleteMap.Name = "btnDeleteMap";
-            this.btnDeleteMap.Size = new System.Drawing.Size(139, 23);
+            this.btnDeleteMap.Size = new System.Drawing.Size(126, 23);
             this.btnDeleteMap.TabIndex = 11;
             this.btnDeleteMap.Text = "Delete Selected Map";
             this.btnDeleteMap.UseVisualStyleBackColor = true;
@@ -143,7 +138,6 @@
             // 
             // label2
             // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(6, 398);
             this.label2.Name = "label2";
@@ -153,7 +147,6 @@
             // 
             // txtNewBpm
             // 
-            this.txtNewBpm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.txtNewBpm.Location = new System.Drawing.Point(70, 395);
             this.txtNewBpm.Name = "txtNewBpm";
             this.txtNewBpm.Size = new System.Drawing.Size(58, 20);
@@ -173,9 +166,9 @@
             this.grpMaps.Controls.Add(this.btnMerge);
             this.grpMaps.Controls.Add(this.label2);
             this.grpMaps.Controls.Add(this.btnDeleteMap);
-            this.grpMaps.Location = new System.Drawing.Point(402, 12);
+            this.grpMaps.Location = new System.Drawing.Point(409, 12);
             this.grpMaps.Name = "grpMaps";
-            this.grpMaps.Size = new System.Drawing.Size(485, 422);
+            this.grpMaps.Size = new System.Drawing.Size(491, 422);
             this.grpMaps.TabIndex = 14;
             this.grpMaps.TabStop = false;
             this.grpMaps.Text = "Maps";
@@ -195,7 +188,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(362, 38);
+            this.label3.Location = new System.Drawing.Point(387, 38);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(54, 13);
             this.label3.TabIndex = 15;
@@ -203,12 +196,10 @@
             // 
             // lstTimeStamps
             // 
-            this.lstTimeStamps.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.lstTimeStamps.FormattingEnabled = true;
-            this.lstTimeStamps.Location = new System.Drawing.Point(293, 64);
+            this.lstTimeStamps.Location = new System.Drawing.Point(347, 64);
             this.lstTimeStamps.Name = "lstTimeStamps";
-            this.lstTimeStamps.Size = new System.Drawing.Size(186, 303);
+            this.lstTimeStamps.Size = new System.Drawing.Size(132, 303);
             this.lstTimeStamps.TabIndex = 14;
             this.lstTimeStamps.Tag = "";
             this.lstTimeStamps.Visible = false;
@@ -225,7 +216,7 @@
             this.groupBox2.Controls.Add(this.txtSongPackName);
             this.groupBox2.Location = new System.Drawing.Point(12, 12);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(384, 422);
+            this.groupBox2.Size = new System.Drawing.Size(387, 422);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Song Packs";
@@ -234,7 +225,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(890, 456);
+            this.ClientSize = new System.Drawing.Size(912, 456);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.grpMaps);
             this.MinimumSize = new System.Drawing.Size(806, 296);

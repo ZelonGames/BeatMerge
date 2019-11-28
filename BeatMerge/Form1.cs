@@ -32,15 +32,19 @@ namespace BeatMerge
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            using (var openFileDialog = new OpenFileDialog())
             {
-                if (openFileDialog.FileName.EndsWith(".json"))
+                openFileDialog.Title = "Select a difficulty .dat file";
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    songPacks[listSongPacks.SelectedIndex].AddMap(openFileDialog.FileName, SelectedSongPackName, true, listMap, lstTimeStamps);
+                    if (openFileDialog.FileName == "info.dat")
+                        MessageBox.Show("You must select a difficulty .dat file!");
+                    else if (openFileDialog.FileName.EndsWith(".dat"))
+                        songPacks[listSongPacks.SelectedIndex].AddMap(openFileDialog.FileName, SelectedSongPackName, true, listMap, lstTimeStamps);
+                    else
+                        MessageBox.Show("You must select a .dat file!");
                 }
-                else
-                    MessageBox.Show("You must select a .json file!");
             }
         }
 
@@ -66,7 +70,7 @@ namespace BeatMerge
             grpMaps.Visible = true;
 
             SongPack selectedSongPack = songPacks[listSongPacks.SelectedIndex];
-            selectedSongPack.ReLoadMapFiles(listMap, lstTimeStamps);
+            selectedSongPack.ReloadMapsListInCurrentSongPack(listMap, lstTimeStamps);
         }
 
         private void btnDeleteSongPack_Click(object sender, EventArgs e)
@@ -75,12 +79,12 @@ namespace BeatMerge
                 return;
 
             SongPack selectedSongPack = songPacks[listSongPacks.SelectedIndex];
-            if (Directory.Exists(selectedSongPack.Path))
+            if (Directory.Exists(selectedSongPack.path))
             {
-                foreach (var file in Directory.GetFiles(selectedSongPack.Path))
+                foreach (var file in Directory.GetFiles(selectedSongPack.path))
                     File.Delete(file);
 
-                Directory.Delete(selectedSongPack.Path);
+                Directory.Delete(selectedSongPack.path);
             }
             else
                 MessageBox.Show("This song pack doesn't exist!");
@@ -99,7 +103,7 @@ namespace BeatMerge
                 {
                     double timestamp = Convert.ToDouble(input);
                     lstTimeStamps.Items[lstTimeStamps.SelectedIndex] = timestamp + " ms";
-                    songPacks[listSongPacks.SelectedIndex].MapFiles[lstTimeStamps.SelectedIndex].StartTimeInMS = timestamp;
+                    songPacks[listSongPacks.SelectedIndex].CustomMaps[lstTimeStamps.SelectedIndex].StartTimeInMS = timestamp;
                 }
                 catch (Exception ex)
                 {
@@ -114,13 +118,14 @@ namespace BeatMerge
             try
             {
                 SongPack selectedSongPack = songPacks[listSongPacks.SelectedIndex];
-                string file = selectedSongPack.MapFiles[listMap.SelectedIndex].Path;
-                if (File.Exists(file))
-                    File.Delete(file);
+
+                string directory = selectedSongPack.CustomMaps[listMap.SelectedIndex].directoryPath;
+                if (Directory.Exists(directory))
+                    Directory.Delete(directory, true);
                 else
                     MessageBox.Show("This map doesn't exist!");
 
-                selectedSongPack.ReLoadMapFiles(listMap, lstTimeStamps);
+                selectedSongPack.ReloadMapsListInCurrentSongPack(listMap, lstTimeStamps);
             }
             catch { }
         }
@@ -137,50 +142,55 @@ namespace BeatMerge
                 MessageBox.Show("I can only understand digits...");
                 return;
             }
-            double? noteJumpSpeed = null;
 
             var mergedEvents = new List<Event>();
             var mergedNotes = new List<Note>();
             var mergedObstacles = new List<Obstacle>();
 
             SongPack currentSongPack = songPacks[listSongPacks.SelectedIndex];
-            //currentSongPack.ReLoadMapFiles(listMap, lstTimeStamps);
 
-            foreach (var mapFile in currentSongPack.MapFiles)
+            foreach (var customMap in currentSongPack.CustomMaps)
             {
-                string jsonData = File.ReadAllText(mapFile.Path);
-                Map currentMap = JsonConvert.DeserializeObject<Map>(jsonData);
-
-                if (!noteJumpSpeed.HasValue)
-                    noteJumpSpeed = currentMap._noteJumpSpeed;
-
-                if (checkBox1.Checked && mapFile.StartTimeInMS.HasValue)
+                if (checkBox1.Checked && customMap.StartTimeInMS.HasValue)
                 {
-                    double jumpDistance = Map.MSToBeats(currentMap._beatsPerMinute, mapFile.StartTimeInMS.Value) - currentMap.GetFirstItemTimestamp();
+                    double jumpDistance = Map.MSToBeats(customMap.info._beatsPerMinute, customMap.StartTimeInMS.Value) - customMap.map.GetFirstItemTimestamp();
 
-                    ItemBase.MoveItems(currentMap._notes, currentMap._beatsPerMinute, jumpDistance);
-                    ItemBase.MoveItems(currentMap._events, currentMap._beatsPerMinute, jumpDistance);
-                    ItemBase.MoveItems(currentMap._obstacles, currentMap._beatsPerMinute, jumpDistance);
+                    ItemBase.MoveItems(customMap.map._notes, customMap.info._beatsPerMinute, jumpDistance);
+                    ItemBase.MoveItems(customMap.map._events, customMap.info._beatsPerMinute, jumpDistance);
+                    ItemBase.MoveItems(customMap.map._obstacles, customMap.info._beatsPerMinute, jumpDistance);
                 }
 
-                ItemBase.ConvertItemBeatsToSeconds(currentMap._events, mergedEvents, currentMap._beatsPerMinute);
-                ItemBase.ConvertItemBeatsToSeconds(currentMap._notes, mergedNotes, currentMap._beatsPerMinute);
-                ItemBase.ConvertItemBeatsToSeconds(currentMap._obstacles, mergedObstacles, currentMap._beatsPerMinute);
+                ItemBase.ConvertItemBeatsToSeconds(customMap.map._events, mergedEvents, customMap.info._beatsPerMinute);
+                ItemBase.ConvertItemBeatsToSeconds(customMap.map._notes, mergedNotes, customMap.info._beatsPerMinute);
+                ItemBase.ConvertItemBeatsToSeconds(customMap.map._obstacles, mergedObstacles, customMap.info._beatsPerMinute);
             }
 
             ItemBase.ConvertItemSecondsToBeats(mergedEvents, newBPM);
             ItemBase.ConvertItemSecondsToBeats(mergedNotes, newBPM);
             ItemBase.ConvertItemSecondsToBeats(mergedObstacles, newBPM);
 
-            var mergedMap = new Map(newBPM, noteJumpSpeed.Value, mergedEvents.ToArray(), mergedNotes.ToArray(), mergedObstacles.ToArray());
+            var mergedMap = new Map(newBPM, mergedEvents.ToArray(), mergedNotes.ToArray(), mergedObstacles.ToArray());
+            SongInfo firstSongInfo = currentSongPack.CustomMaps.First().info;
+            firstSongInfo._beatsPerMinute = newBPM;
+            firstSongInfo._songFilename = "song.ogg";
 
             try
             {
-                string path = "Merged.json";
-                using (StreamWriter wr = new StreamWriter(path))
+                string mergedDirectory = "Merged Map";
+                if (Directory.Exists(mergedDirectory))
+                    Directory.Delete(mergedDirectory, true);
+
+                Directory.CreateDirectory(mergedDirectory);
+
+                string difficulty = mergedDirectory + "/Merged.dat";
+                using (StreamWriter wr = new StreamWriter(difficulty))
                     wr.WriteLine(JsonConvert.SerializeObject(mergedMap));
 
-                MessageBox.Show("A new .json file has been created at: \"" + path + "\"");
+                string info = mergedDirectory + "/info.dat";
+                using (StreamWriter wr = new StreamWriter(info))
+                    wr.WriteLine(JsonConvert.SerializeObject(firstSongInfo));
+
+                MessageBox.Show("A new .dat file has been created at: \"" + difficulty + "\"");
             }
             catch (Exception ex)
             {
@@ -195,7 +205,7 @@ namespace BeatMerge
         private string GetMapNameFromFile(string fileName)
         {
             string[] folders = fileName.Split('\\');
-            return folders[folders.Length - 2] + " - " + folders.Last().Replace(".json", "");
+            return folders[folders.Length - 2] + " - " + folders.Last().Replace(".dat", "");
         }
 
         private void ReLoadSongPacks()
@@ -218,75 +228,6 @@ namespace BeatMerge
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             lstTimeStamps.Visible = checkBox1.Checked;
-        }
-    }
-
-    public class SongPack
-    {
-        public List<MapFile> MapFiles { get; private set; }
-
-        public string Path { get; private set; }
-
-        public string DisplayName => Path.Split('\\').Last();
-
-        public SongPack(string path, bool createDirectory)
-        {
-            Path = path;
-            if (createDirectory)
-                Directory.CreateDirectory(path);
-        }
-
-        public void AddMap(string filename, string songPackName, bool createFile, ListBox listMap, ListBox lstTimeStamps)
-        {
-            var mapFile = new MapFile(filename, songPackName, createFile);
-            listMap.Items.Add(mapFile.DisplayName);
-            MapFiles.Add(mapFile);
-
-            string jsonData = File.ReadAllText(mapFile.Path);
-            Map currentMap = JsonConvert.DeserializeObject<Map>(jsonData);
-            Map.GetBeatLengthInSeconds(currentMap._beatsPerMinute);
-            lstTimeStamps.Items.Add((Map.BPMToMS(currentMap._beatsPerMinute) * currentMap.GetFirstItemTimestamp()) + " ms");
-        }
-
-        public void ReLoadMapFiles(ListBox listMap, ListBox lstTimeStamps)
-        {
-            listMap.Items.Clear();
-            lstTimeStamps.Items.Clear();
-            MapFiles = new List<MapFile>();
-            foreach (var file in Directory.GetFiles(Path))
-            {
-                AddMap(file, DisplayName, false, listMap, lstTimeStamps);
-            }
-        }
-    }
-
-    public class MapFile
-    {
-        public string Path { get; private set; }
-
-        public double? StartTimeInMS = null;
-
-        public string FileName => Folders.Last();
-
-        public string DisplayName => MapName + " - " + DifficultyName;
-
-        public string MapName => Folders[Folders.Length - 2];
-
-        public string DifficultyName => Folders.Last().Replace(".json", "");
-
-        private string[] Folders => Path.Split('\\');
-
-        public MapFile(string selectedFile, string selectedSongPackName, bool createFile)
-        {
-            this.Path = selectedFile;
-            if (createFile)
-                File.Copy(Path, Form1.songPackFolder + "/" + selectedSongPackName + "/" + DisplayName + ".json");
-        }
-
-        private string GetMapNameFromFile(string fileName)
-        {
-            string[] folders = fileName.Split('\\');
-            return folders[folders.Length - 2] + " - " + folders.Last().Replace(".json", "");
         }
     }
 }
