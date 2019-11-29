@@ -67,6 +67,8 @@ namespace BeatMerge.Items
 
         public static double MSToBeats(double bpm, double ms)
         {
+            if (ms == 0)
+                return 0;
             return ms / (60000 / bpm);
         }
 
@@ -78,6 +80,11 @@ namespace BeatMerge.Items
         public static double GetBeatLengthInSeconds(double bpm)
         {
             return 60d / bpm;
+        }
+
+        public static double GetBeatLengthInMS(double bpm)
+        {
+            return 60000d / bpm;
         }
     }
 }

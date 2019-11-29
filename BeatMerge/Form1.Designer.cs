@@ -40,10 +40,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.txtNewBpm = new System.Windows.Forms.TextBox();
             this.grpMaps = new System.Windows.Forms.GroupBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.lstTimeStamps = new System.Windows.Forms.ListBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.checkIgnoreEvents = new System.Windows.Forms.CheckBox();
+            this.checkIgnoreObstacles = new System.Windows.Forms.CheckBox();
             this.grpMaps.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -60,9 +59,9 @@
             // 
             // btnMerge
             // 
-            this.btnMerge.Location = new System.Drawing.Point(134, 393);
+            this.btnMerge.Location = new System.Drawing.Point(134, 385);
             this.btnMerge.Name = "btnMerge";
-            this.btnMerge.Size = new System.Drawing.Size(105, 23);
+            this.btnMerge.Size = new System.Drawing.Size(207, 23);
             this.btnMerge.TabIndex = 2;
             this.btnMerge.Text = "Merge";
             this.btnMerge.UseVisualStyleBackColor = true;
@@ -95,7 +94,7 @@
             this.listSongPacks.FormattingEnabled = true;
             this.listSongPacks.Location = new System.Drawing.Point(6, 62);
             this.listSongPacks.Name = "listSongPacks";
-            this.listSongPacks.Size = new System.Drawing.Size(372, 303);
+            this.listSongPacks.Size = new System.Drawing.Size(372, 290);
             this.listSongPacks.TabIndex = 7;
             this.listSongPacks.SelectedIndexChanged += new System.EventHandler(this.listSongPacks_SelectedIndexChanged);
             // 
@@ -118,7 +117,7 @@
             // btnDeleteSongPack
             // 
             this.btnDeleteSongPack.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnDeleteSongPack.Location = new System.Drawing.Point(6, 388);
+            this.btnDeleteSongPack.Location = new System.Drawing.Point(6, 387);
             this.btnDeleteSongPack.Name = "btnDeleteSongPack";
             this.btnDeleteSongPack.Size = new System.Drawing.Size(372, 23);
             this.btnDeleteSongPack.TabIndex = 10;
@@ -139,7 +138,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 398);
+            this.label2.Location = new System.Drawing.Point(6, 391);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(58, 13);
             this.label2.TabIndex = 12;
@@ -147,7 +146,7 @@
             // 
             // txtNewBpm
             // 
-            this.txtNewBpm.Location = new System.Drawing.Point(70, 395);
+            this.txtNewBpm.Location = new System.Drawing.Point(70, 388);
             this.txtNewBpm.Name = "txtNewBpm";
             this.txtNewBpm.Size = new System.Drawing.Size(58, 20);
             this.txtNewBpm.TabIndex = 13;
@@ -157,53 +156,21 @@
             // 
             this.grpMaps.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.grpMaps.Controls.Add(this.checkBox1);
-            this.grpMaps.Controls.Add(this.label3);
-            this.grpMaps.Controls.Add(this.lstTimeStamps);
+            this.grpMaps.Controls.Add(this.checkIgnoreObstacles);
+            this.grpMaps.Controls.Add(this.checkIgnoreEvents);
             this.grpMaps.Controls.Add(this.listMap);
             this.grpMaps.Controls.Add(this.btnAdd);
             this.grpMaps.Controls.Add(this.txtNewBpm);
             this.grpMaps.Controls.Add(this.btnMerge);
             this.grpMaps.Controls.Add(this.label2);
             this.grpMaps.Controls.Add(this.btnDeleteMap);
-            this.grpMaps.Location = new System.Drawing.Point(409, 12);
+            this.grpMaps.Location = new System.Drawing.Point(412, 12);
             this.grpMaps.Name = "grpMaps";
-            this.grpMaps.Size = new System.Drawing.Size(491, 422);
+            this.grpMaps.Size = new System.Drawing.Size(457, 421);
             this.grpMaps.TabIndex = 14;
             this.grpMaps.TabStop = false;
             this.grpMaps.Text = "Maps";
             this.grpMaps.Visible = false;
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(293, 388);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(132, 17);
-            this.checkBox1.TabIndex = 16;
-            this.checkBox1.Text = "Use custom start times";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(387, 38);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(54, 13);
-            this.label3.TabIndex = 15;
-            this.label3.Text = "Start time:";
-            // 
-            // lstTimeStamps
-            // 
-            this.lstTimeStamps.FormattingEnabled = true;
-            this.lstTimeStamps.Location = new System.Drawing.Point(347, 64);
-            this.lstTimeStamps.Name = "lstTimeStamps";
-            this.lstTimeStamps.Size = new System.Drawing.Size(132, 303);
-            this.lstTimeStamps.TabIndex = 14;
-            this.lstTimeStamps.Tag = "";
-            this.lstTimeStamps.Visible = false;
-            this.lstTimeStamps.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lstTimeStamps_MouseDoubleClick);
             // 
             // groupBox2
             // 
@@ -216,16 +183,38 @@
             this.groupBox2.Controls.Add(this.txtSongPackName);
             this.groupBox2.Location = new System.Drawing.Point(12, 12);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(387, 422);
+            this.groupBox2.Size = new System.Drawing.Size(387, 421);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Song Packs";
+            // 
+            // checkIgnoreEvents
+            // 
+            this.checkIgnoreEvents.AutoSize = true;
+            this.checkIgnoreEvents.Location = new System.Drawing.Point(347, 64);
+            this.checkIgnoreEvents.Name = "checkIgnoreEvents";
+            this.checkIgnoreEvents.Size = new System.Drawing.Size(92, 17);
+            this.checkIgnoreEvents.TabIndex = 17;
+            this.checkIgnoreEvents.Text = "Ignore Events";
+            this.checkIgnoreEvents.UseVisualStyleBackColor = true;
+            // 
+            // checkIgnoreObstacles
+            // 
+            this.checkIgnoreObstacles.AutoSize = true;
+            this.checkIgnoreObstacles.Checked = true;
+            this.checkIgnoreObstacles.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkIgnoreObstacles.Location = new System.Drawing.Point(347, 87);
+            this.checkIgnoreObstacles.Name = "checkIgnoreObstacles";
+            this.checkIgnoreObstacles.Size = new System.Drawing.Size(106, 17);
+            this.checkIgnoreObstacles.TabIndex = 18;
+            this.checkIgnoreObstacles.Text = "Ignore Obstacles";
+            this.checkIgnoreObstacles.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(912, 456);
+            this.ClientSize = new System.Drawing.Size(881, 455);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.grpMaps);
             this.MinimumSize = new System.Drawing.Size(806, 296);
@@ -255,9 +244,8 @@
         private System.Windows.Forms.TextBox txtNewBpm;
         private System.Windows.Forms.GroupBox grpMaps;
         private System.Windows.Forms.GroupBox groupBox2;
-        public System.Windows.Forms.ListBox lstTimeStamps;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox checkIgnoreObstacles;
+        private System.Windows.Forms.CheckBox checkIgnoreEvents;
     }
 }
 

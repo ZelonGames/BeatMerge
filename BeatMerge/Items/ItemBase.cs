@@ -9,6 +9,11 @@ namespace BeatMerge.Items
 {
     public abstract class ItemBase
     {
+        protected ItemBase(double time)
+        {
+            _time = time;
+        }
+
         public double _time { get; set; }
 
         public static void ConvertItemBeatsToSeconds<T>(T[] items, List<T> mergedItems, double bpm) where T : ItemBase
@@ -28,11 +33,11 @@ namespace BeatMerge.Items
             }
         }
 
-        public static void MoveItems<T>(T[] items, double bpm, double jumpDistance) where T : ItemBase
+        public static void MoveItems<T>(T[] items, double distanceToMove) where T : ItemBase
         {
             foreach (var item in items)
             {
-                item._time += jumpDistance;
+                item._time += distanceToMove;
             }
         }
     }

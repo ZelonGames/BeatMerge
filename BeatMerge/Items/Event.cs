@@ -3,7 +3,13 @@ namespace BeatMerge.Items
 {
     public class Event : ItemBase
     {
-        public double _type { get; set; }
-        public double _value { get; set; }
+        public Event(int type, int value, double time) : base(time)
+        {
+            _type = type;
+            _value = value;
+        }
+
+        public int _type { get; set; }
+        public int _value { get; set; }
     }
 }

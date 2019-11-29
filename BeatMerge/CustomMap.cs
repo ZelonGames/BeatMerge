@@ -8,20 +8,24 @@ using System.Windows.Forms;
 using Newtonsoft.Json;
 
 using BeatMerge.Items;
+using NAudio.Vorbis;
 
 namespace BeatMerge
 {
     public class CustomMap
     {
+        public readonly VorbisWaveReader audio;
+
         public readonly Map map;
         public readonly SongInfo info;
 
+        public readonly string audioPath;
         public readonly string difficultyPath;
         public readonly string infoPath;
         public readonly string directoryPath;
         public readonly string displayName;
 
-        public double? StartTimeInMS = null;
+        public readonly int songLengthInMS;
 
         public CustomMap(string selectedFile, string selectedSongPackName, bool createFile)
         {
@@ -30,9 +34,10 @@ namespace BeatMerge
             directoryPath = Form1.songPackFolder + "/" + selectedSongPackName + "/" + folders[folders.Length - 2];
 
             string[] selectedPathFolders = selectedFile.Split('\\');
+            string selectedDirectoryPath = selectedFile.Replace(selectedPathFolders.Last(), "").Replace("\\", "/");
             string infoFile = "";
 
-            infoFile = selectedFile.Replace(selectedPathFolders.Last(), "").Replace("\\", "/") + "info.dat";
+            infoFile = selectedDirectoryPath + "info.dat";
             infoPath = directoryPath + "/info.dat";
 
             if (createFile)
@@ -63,20 +68,24 @@ namespace BeatMerge
             map = JsonConvert.DeserializeObject<Map>(difficultyJsonData);
             info = JsonConvert.DeserializeObject<SongInfo>(infoJsonData);
 
+            audioPath = directoryPath + "/" + info._songFilename;
+
             if (createFile)
             {
                 try
                 {
-                    string oldDirectoryPath = "";
-                    oldDirectoryPath = selectedFile.Replace(folders.Last(), "");
-
-                    File.Copy(oldDirectoryPath + "\\" + info._songFilename, directoryPath + "/" + info._songFilename);
+                    File.Copy(selectedDirectoryPath + info._songFilename, audioPath);
+                    AudioHelper.ConvertToMp3(audioPath);
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.ToString());
                 }
             }
+
+            audio = new VorbisWaveReader(audioPath);
+
+            audioPath = audioPath.Replace(Path.GetExtension(audioPath), ".mp3");
         }
     }
 }

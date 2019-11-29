@@ -26,22 +26,20 @@ namespace BeatMerge
                 Directory.CreateDirectory(path);
         }
 
-        public void AddMap(string filename, string songPackName, bool createFile, ListBox listMap, ListBox lstTimeStamps)
+        public void AddMap(string filename, string songPackName, bool createFile, ListBox listMap)
         {
             var mapFile = new CustomMap(filename, songPackName, createFile);
             listMap.Items.Add(mapFile.displayName);
             CustomMaps.Add(mapFile);
 
             string jsonData = File.ReadAllText(mapFile.difficultyPath);
-            Items.Map currentMap = JsonConvert.DeserializeObject<Items.Map>(jsonData);
-            Items.Map.GetBeatLengthInSeconds(currentMap._beatsPerMinute);
-            lstTimeStamps.Items.Add((Items.Map.BPMToMS(currentMap._beatsPerMinute) * currentMap.GetFirstItemTimestamp()) + " ms");
+            Map currentMap = JsonConvert.DeserializeObject<Map>(jsonData);
+            Map.GetBeatLengthInSeconds(currentMap._beatsPerMinute);
         }
 
-        public void ReloadMapsListInCurrentSongPack(ListBox listMap, ListBox lstTimeStamps)
+        public void ReloadMapsListInCurrentSongPack(ListBox listMap)
         {
             listMap.Items.Clear();
-            lstTimeStamps.Items.Clear();
             CustomMaps = new List<CustomMap>();
             foreach (var directory in Directory.GetDirectories(path))
             {
@@ -49,7 +47,7 @@ namespace BeatMerge
                 string file = files.Where(x => x != "info.dat").First();
 
                 // The files are already created so just add it to the listbox
-                AddMap(file, DisplayName, false, listMap, lstTimeStamps);
+                AddMap(file, DisplayName, false, listMap);
             }
         }
     }
