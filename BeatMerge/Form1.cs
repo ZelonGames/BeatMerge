@@ -2,13 +2,10 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualBasic;
 using System.Windows.Forms;
 using Newtonsoft.Json;
-using NAudio.Wave;
 
 using BeatMerge.Items;
-
 
 namespace BeatMerge
 {
@@ -27,6 +24,8 @@ namespace BeatMerge
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            //AudioHelper.Combine2(new string[] { "b.egg", "a.egg"});
+
             ReLoadSongPacks();
         }
 
@@ -197,8 +196,6 @@ namespace BeatMerge
                 string info = mergedDirectory + "/info.dat";
                 using (StreamWriter wr = new StreamWriter(info))
                     wr.WriteLine(JsonConvert.SerializeObject(firstSongInfo));
-
-                AudioHelper.Combine(mergedDirectory + "/song.mp3", currentSongPack.CustomMaps.Select(x => x.audioPath).ToArray());
 
                 MessageBox.Show("A new folder called " + mergedDirectory + " has been created");
             }

@@ -75,7 +75,6 @@ namespace BeatMerge
                 try
                 {
                     File.Copy(selectedDirectoryPath + info._songFilename, audioPath);
-                    AudioHelper.ConvertToMp3(audioPath);
                 }
                 catch (Exception ex)
                 {
@@ -84,8 +83,6 @@ namespace BeatMerge
             }
 
             audio = new VorbisWaveReader(audioPath);
-
-            audioPath = audioPath.Replace(Path.GetExtension(audioPath), ".mp3");
         }
     }
 }

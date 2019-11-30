@@ -28,11 +28,11 @@ namespace BeatMerge
 
         public void AddMap(string filename, string songPackName, bool createFile, ListBox listMap)
         {
-            var mapFile = new CustomMap(filename, songPackName, createFile);
-            listMap.Items.Add(mapFile.displayName);
-            CustomMaps.Add(mapFile);
+            var customMap = new CustomMap(filename, songPackName, createFile);
+            listMap.Items.Add(customMap.displayName);
+            CustomMaps.Add(customMap);
 
-            string jsonData = File.ReadAllText(mapFile.difficultyPath);
+            string jsonData = File.ReadAllText(customMap.difficultyPath);
             Map currentMap = JsonConvert.DeserializeObject<Map>(jsonData);
             Map.GetBeatLengthInSeconds(currentMap._beatsPerMinute);
         }
@@ -44,7 +44,7 @@ namespace BeatMerge
             foreach (var directory in Directory.GetDirectories(path))
             {
                 string[] files = Directory.GetFiles(directory, "*.dat");
-                string file = files.Where(x => x != "info.dat").First();
+                string file = files.Where(x => x.Split('\\').Last() != "info.dat").First();
 
                 // The files are already created so just add it to the listbox
                 AddMap(file, DisplayName, false, listMap);

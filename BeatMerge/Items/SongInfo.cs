@@ -91,15 +91,15 @@ namespace BeatMerge.Items
 
     public class CustomDifficultyData
     {
-        public string _difficultyLabel { get; set; }
-        public double _editorOffset { get; set; }
-        public double _editorOldOffset { get; set; }
-
         public CustomDifficultyData(string difficultyLabel, double editorOffset, double editorOldOffset)
         {
             _difficultyLabel = difficultyLabel;
             _editorOffset = editorOffset;
             _editorOldOffset = editorOldOffset;
         }
+
+        public string _difficultyLabel { get; set; }
+        public double _editorOffset { get; set; }
+        public double _editorOldOffset { get; set; }
     }
 }
