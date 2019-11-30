@@ -55,7 +55,6 @@
             this.btnAdd.TabIndex = 1;
             this.btnAdd.Text = "Add Map";
             this.btnAdd.UseVisualStyleBackColor = true;
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // btnMerge
             // 
@@ -65,7 +64,6 @@
             this.btnMerge.TabIndex = 2;
             this.btnMerge.Text = "Merge";
             this.btnMerge.UseVisualStyleBackColor = true;
-            this.btnMerge.Click += new System.EventHandler(this.btnMerge_Click);
             // 
             // listMap
             // 
@@ -130,7 +128,6 @@
             this.btnDeleteMap.TabIndex = 11;
             this.btnDeleteMap.Text = "Delete Selected Map";
             this.btnDeleteMap.UseVisualStyleBackColor = true;
-            this.btnDeleteMap.Click += new System.EventHandler(this.btnDeleteMap_Click);
             // 
             // label2
             // 
@@ -238,11 +235,11 @@
         private System.Windows.Forms.Button btnDeleteSongPack;
         private System.Windows.Forms.Button btnDeleteMap;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txtNewBpm;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.CheckBox checkIgnoreObstacles;
-        private System.Windows.Forms.CheckBox checkIgnoreEvents;
         public System.Windows.Forms.GroupBox grpMaps;
+        public System.Windows.Forms.TextBox txtNewBpm;
+        public System.Windows.Forms.CheckBox checkIgnoreObstacles;
+        public System.Windows.Forms.CheckBox checkIgnoreEvents;
     }
 }
 

@@ -90,6 +90,11 @@ namespace BeatMerge
             }
         }
 
+        public SongPack GetCurrentSongPack()
+        {
+            return songPacks[form.listSongPacks.SelectedIndex];
+        }
+
         #endregion
     }
 }
