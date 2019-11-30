@@ -11,14 +11,10 @@ namespace BeatMerge
     public class MapListManager
     {
         public readonly Form1 form;
-        public readonly SongPackManager songPackManager;
 
-        private string SelectedSongPackName => form.listSongPacks.Items[form.listSongPacks.SelectedIndex].ToString();
-
-        public MapListManager(Form1 form, SongPackManager songPackManager)
+        public MapListManager(Form1 form)
         {
             this.form = form;
-            this.songPackManager = songPackManager;
         }
 
         public void AddMap(SongPack songPack)
@@ -32,7 +28,7 @@ namespace BeatMerge
                     if (openFileDialog.FileName == "info.dat")
                         MessageBox.Show("You must select a difficulty .dat file!");
                     else if (openFileDialog.FileName.EndsWith(".dat"))
-                        songPack.AddMap(openFileDialog.FileName, SelectedSongPackName, true, form.listMap);
+                        songPack.AddMap(openFileDialog.FileName, songPack.DisplayName, true, form.listMap);
                     else
                         MessageBox.Show("You must select a .dat file!");
                 }

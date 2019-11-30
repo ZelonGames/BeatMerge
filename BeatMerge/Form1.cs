@@ -30,7 +30,7 @@ namespace BeatMerge
             songPackManager = new SongPackManager(this);
             songPackManager.ReLoadSongPacks();
 
-            mapListManager = new MapListManager(this, songPackManager);
+            mapListManager = new MapListManager(this);
         }
 
         #region SongPackManager
