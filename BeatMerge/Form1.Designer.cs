@@ -55,6 +55,7 @@
             this.btnAdd.TabIndex = 1;
             this.btnAdd.Text = "Add Map";
             this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // btnMerge
             // 
@@ -64,6 +65,7 @@
             this.btnMerge.TabIndex = 2;
             this.btnMerge.Text = "Merge";
             this.btnMerge.UseVisualStyleBackColor = true;
+            this.btnMerge.Click += new System.EventHandler(this.btnMerge_Click);
             // 
             // listMap
             // 
@@ -83,6 +85,7 @@
             this.btnAddSongPack.TabIndex = 4;
             this.btnAddSongPack.Text = "Create New Song Pack";
             this.btnAddSongPack.UseVisualStyleBackColor = true;
+            this.btnAddSongPack.Click += new System.EventHandler(this.btnAddSongPack_Click);
             // 
             // listSongPacks
             // 
@@ -93,6 +96,7 @@
             this.listSongPacks.Name = "listSongPacks";
             this.listSongPacks.Size = new System.Drawing.Size(372, 290);
             this.listSongPacks.TabIndex = 7;
+            this.listSongPacks.SelectedIndexChanged += new System.EventHandler(this.listSongPacks_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -119,6 +123,7 @@
             this.btnDeleteSongPack.TabIndex = 10;
             this.btnDeleteSongPack.Text = "Delete Selected Song Pack";
             this.btnDeleteSongPack.UseVisualStyleBackColor = true;
+            this.btnDeleteSongPack.Click += new System.EventHandler(this.btnDeleteSongPack_Click);
             // 
             // btnDeleteMap
             // 
@@ -128,6 +133,7 @@
             this.btnDeleteMap.TabIndex = 11;
             this.btnDeleteMap.Text = "Delete Selected Map";
             this.btnDeleteMap.UseVisualStyleBackColor = true;
+            this.btnDeleteMap.Click += new System.EventHandler(this.btnDeleteMap_Click);
             // 
             // label2
             // 

@@ -11,39 +11,65 @@ namespace BeatMerge
 {
     public partial class Form1 : Form
     {
+        #region Fields
+
         private SongPackManager songPackManager;
-        private MapsManager mapsManager;
+        private MapListManager mapListManager;
+
+        #endregion
 
         public Form1()
         {
             InitializeComponent();
         }
 
+        #region Events
+
         private void Form1_Load(object sender, EventArgs e)
-        {
-            InstallSongPackManager();
-            InstallMapsManager();
-        }
-
-        #region Methods
-
-        private void InstallSongPackManager()
         {
             songPackManager = new SongPackManager(this);
             songPackManager.ReLoadSongPacks();
 
-            btnAddSongPack.Click += songPackManager.OnAddSongPackClicked;
-            btnDeleteSongPack.Click += songPackManager.OnDeleteSongPackClicked;
-            listSongPacks.SelectedIndexChanged += songPackManager.OnListSongPackSelectedIndexChanged;
+            mapListManager = new MapListManager(this, songPackManager);
         }
 
-        private void InstallMapsManager()
+        #region SongPackManager
+
+        private void btnAddSongPack_Click(object sender, EventArgs e)
         {
-            mapsManager = new MapsManager(this, songPackManager);
-            btnAdd.Click += mapsManager.OnAddMapClicked;
-            btnDeleteMap.Click += mapsManager.OnDeleteMapClicked;
-            btnMerge.Click += mapsManager.OnMergeButtonClicked;
+            songPackManager.AddSongPack();
         }
+
+        private void btnDeleteSongPack_Click(object sender, EventArgs e)
+        {
+            songPackManager.DeleteSongPack(songPackManager.GetCurrentSongPack());
+        }
+
+        private void listSongPacks_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            songPackManager.LoadNewSongPack(songPackManager.GetCurrentSongPack());
+        }
+
+        #endregion
+
+        #region MapListManager
+
+        private void btnDeleteMap_Click(object sender, EventArgs e)
+        {
+            mapListManager.DeleteMap(songPackManager.GetCurrentSongPack());
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            mapListManager.AddMap(songPackManager.GetCurrentSongPack());
+        }
+
+        private void btnMerge_Click(object sender, EventArgs e)
+        {
+            MapsMergerHelper.MergeMaps(this, songPackManager.GetCurrentSongPack());
+        }
+
+        #endregion
 
         #endregion
     }

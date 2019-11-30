@@ -26,7 +26,7 @@ namespace BeatMerge
 
         #region Events
 
-        public void OnAddSongPackClicked(object sender, EventArgs e)
+        public void AddSongPack()
         {
             string songPackInputName = form.txtSongPackName.Text.Replace("\\", "").Replace(".", "").Replace("/", "");
             if (string.IsNullOrEmpty(songPackInputName))
@@ -40,18 +40,17 @@ namespace BeatMerge
             ReLoadSongPacks();
         }
 
-        public void OnDeleteSongPackClicked(object sender, EventArgs e)
+        public void DeleteSongPack(SongPack songPack)
         {
             if (form.listSongPacks.SelectedIndex < 0)
                 return;
 
-            SongPack selectedSongPack = songPacks[form.listSongPacks.SelectedIndex];
-            if (Directory.Exists(selectedSongPack.path))
+            if (Directory.Exists(songPack.path))
             {
-                foreach (var file in Directory.GetFiles(selectedSongPack.path))
+                foreach (var file in Directory.GetFiles(songPack.path))
                     File.Delete(file);
 
-                Directory.Delete(selectedSongPack.path);
+                Directory.Delete(songPack.path);
             }
             else
                 MessageBox.Show("This song pack doesn't exist!");
@@ -60,15 +59,14 @@ namespace BeatMerge
             form.grpMaps.Visible = false;
         }
 
-        public void OnListSongPackSelectedIndexChanged(object sender, EventArgs e)
+        public void LoadNewSongPack(SongPack songPack)
         {
             if (form.listSongPacks.SelectedIndex < 0)
                 return;
 
             form.grpMaps.Visible = true;
 
-            SongPack selectedSongPack = songPacks[form.listSongPacks.SelectedIndex];
-            selectedSongPack.ReloadMapsListInCurrentSongPack(form.listMap);
+            songPack.ReloadMapsListInCurrentSongPack(form.listMap);
         }
 
         #endregion

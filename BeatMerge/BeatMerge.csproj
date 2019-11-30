@@ -83,7 +83,7 @@
     <Compile Include="Items\Obstacle.cs" />
     <Compile Include="Items\SongInfo.cs" />
     <Compile Include="CustomMap.cs" />
-    <Compile Include="MapsManager.cs" />
+    <Compile Include="MapListManager.cs" />
     <Compile Include="MapsMergerHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
