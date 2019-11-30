@@ -40,9 +40,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.txtNewBpm = new System.Windows.Forms.TextBox();
             this.grpMaps = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.checkIgnoreEvents = new System.Windows.Forms.CheckBox();
             this.checkIgnoreObstacles = new System.Windows.Forms.CheckBox();
+            this.checkIgnoreEvents = new System.Windows.Forms.CheckBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.grpMaps.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -85,7 +85,6 @@
             this.btnAddSongPack.TabIndex = 4;
             this.btnAddSongPack.Text = "Create New Song Pack";
             this.btnAddSongPack.UseVisualStyleBackColor = true;
-            this.btnAddSongPack.Click += new System.EventHandler(this.btnAddSongPack_Click);
             // 
             // listSongPacks
             // 
@@ -96,7 +95,6 @@
             this.listSongPacks.Name = "listSongPacks";
             this.listSongPacks.Size = new System.Drawing.Size(372, 290);
             this.listSongPacks.TabIndex = 7;
-            this.listSongPacks.SelectedIndexChanged += new System.EventHandler(this.listSongPacks_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -123,7 +121,6 @@
             this.btnDeleteSongPack.TabIndex = 10;
             this.btnDeleteSongPack.Text = "Delete Selected Song Pack";
             this.btnDeleteSongPack.UseVisualStyleBackColor = true;
-            this.btnDeleteSongPack.Click += new System.EventHandler(this.btnDeleteSongPack_Click);
             // 
             // btnDeleteMap
             // 
@@ -172,6 +169,28 @@
             this.grpMaps.Text = "Maps";
             this.grpMaps.Visible = false;
             // 
+            // checkIgnoreObstacles
+            // 
+            this.checkIgnoreObstacles.AutoSize = true;
+            this.checkIgnoreObstacles.Checked = true;
+            this.checkIgnoreObstacles.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkIgnoreObstacles.Location = new System.Drawing.Point(347, 87);
+            this.checkIgnoreObstacles.Name = "checkIgnoreObstacles";
+            this.checkIgnoreObstacles.Size = new System.Drawing.Size(106, 17);
+            this.checkIgnoreObstacles.TabIndex = 18;
+            this.checkIgnoreObstacles.Text = "Ignore Obstacles";
+            this.checkIgnoreObstacles.UseVisualStyleBackColor = true;
+            // 
+            // checkIgnoreEvents
+            // 
+            this.checkIgnoreEvents.AutoSize = true;
+            this.checkIgnoreEvents.Location = new System.Drawing.Point(347, 64);
+            this.checkIgnoreEvents.Name = "checkIgnoreEvents";
+            this.checkIgnoreEvents.Size = new System.Drawing.Size(92, 17);
+            this.checkIgnoreEvents.TabIndex = 17;
+            this.checkIgnoreEvents.Text = "Ignore Events";
+            this.checkIgnoreEvents.UseVisualStyleBackColor = true;
+            // 
             // groupBox2
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -187,28 +206,6 @@
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Song Packs";
-            // 
-            // checkIgnoreEvents
-            // 
-            this.checkIgnoreEvents.AutoSize = true;
-            this.checkIgnoreEvents.Location = new System.Drawing.Point(347, 64);
-            this.checkIgnoreEvents.Name = "checkIgnoreEvents";
-            this.checkIgnoreEvents.Size = new System.Drawing.Size(92, 17);
-            this.checkIgnoreEvents.TabIndex = 17;
-            this.checkIgnoreEvents.Text = "Ignore Events";
-            this.checkIgnoreEvents.UseVisualStyleBackColor = true;
-            // 
-            // checkIgnoreObstacles
-            // 
-            this.checkIgnoreObstacles.AutoSize = true;
-            this.checkIgnoreObstacles.Checked = true;
-            this.checkIgnoreObstacles.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkIgnoreObstacles.Location = new System.Drawing.Point(347, 87);
-            this.checkIgnoreObstacles.Name = "checkIgnoreObstacles";
-            this.checkIgnoreObstacles.Size = new System.Drawing.Size(106, 17);
-            this.checkIgnoreObstacles.TabIndex = 18;
-            this.checkIgnoreObstacles.Text = "Ignore Obstacles";
-            this.checkIgnoreObstacles.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -242,10 +239,10 @@
         private System.Windows.Forms.Button btnDeleteMap;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtNewBpm;
-        private System.Windows.Forms.GroupBox grpMaps;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.CheckBox checkIgnoreObstacles;
         private System.Windows.Forms.CheckBox checkIgnoreEvents;
+        public System.Windows.Forms.GroupBox grpMaps;
     }
 }
 

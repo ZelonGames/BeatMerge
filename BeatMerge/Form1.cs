@@ -11,10 +11,7 @@ namespace BeatMerge
 {
     public partial class Form1 : Form
     {
-        private List<SongPack> songPacks = new List<SongPack>();
-
-        public const string songPackFolder = "SongPacks";
-
+        private SongPackManager songPackManager;
         private string SelectedSongPackName => listSongPacks.Items[listSongPacks.SelectedIndex].ToString();
 
         public Form1()
@@ -25,8 +22,12 @@ namespace BeatMerge
         private void Form1_Load(object sender, EventArgs e)
         {
             //AudioHelper.Combine2(new string[] { "b.egg", "a.egg"});
+            songPackManager = new SongPackManager(this);
+            songPackManager.ReLoadSongPacks();
 
-            ReLoadSongPacks();
+            btnAddSongPack.Click += songPackManager.OnAddSongPackClicked;
+            btnDeleteSongPack.Click += songPackManager.OnDeleteSongPackClicked;
+            listSongPacks.SelectedIndexChanged += songPackManager.OnListSongPackSelectedIndexChanged;
         }
 
         #region Events
@@ -42,63 +43,18 @@ namespace BeatMerge
                     if (openFileDialog.FileName == "info.dat")
                         MessageBox.Show("You must select a difficulty .dat file!");
                     else if (openFileDialog.FileName.EndsWith(".dat"))
-                        songPacks[listSongPacks.SelectedIndex].AddMap(openFileDialog.FileName, SelectedSongPackName, true, listMap);
+                        songPackManager.songPacks[listSongPacks.SelectedIndex].AddMap(openFileDialog.FileName, SelectedSongPackName, true, listMap);
                     else
                         MessageBox.Show("You must select a .dat file!");
                 }
             }
-        }
-
-        private void btnAddSongPack_Click(object sender, EventArgs e)
-        {
-            string songPackInputName = txtSongPackName.Text.Replace("\\", "").Replace(".", "").Replace("/", "");
-            if (string.IsNullOrEmpty(songPackInputName))
-                return;
-
-            if (!Directory.Exists(songPackFolder))
-                Directory.CreateDirectory(songPackFolder);
-
-            string songPackName = songPackFolder + "/" + songPackInputName;
-            songPacks.Add(new SongPack(songPackName, true));
-            ReLoadSongPacks();
-        }
-
-        private void listSongPacks_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (listSongPacks.SelectedIndex < 0)
-                return;
-
-            grpMaps.Visible = true;
-
-            SongPack selectedSongPack = songPacks[listSongPacks.SelectedIndex];
-            selectedSongPack.ReloadMapsListInCurrentSongPack(listMap);
-        }
-
-        private void btnDeleteSongPack_Click(object sender, EventArgs e)
-        {
-            if (listSongPacks.SelectedIndex < 0)
-                return;
-
-            SongPack selectedSongPack = songPacks[listSongPacks.SelectedIndex];
-            if (Directory.Exists(selectedSongPack.path))
-            {
-                foreach (var file in Directory.GetFiles(selectedSongPack.path))
-                    File.Delete(file);
-
-                Directory.Delete(selectedSongPack.path);
-            }
-            else
-                MessageBox.Show("This song pack doesn't exist!");
-
-            ReLoadSongPacks();
-            grpMaps.Visible = false;
         }
         
         private void btnDeleteMap_Click(object sender, EventArgs e)
         {
             try
             {
-                SongPack selectedSongPack = songPacks[listSongPacks.SelectedIndex];
+                SongPack selectedSongPack = songPackManager.songPacks[listSongPacks.SelectedIndex];
 
                 selectedSongPack.CustomMaps[listMap.SelectedIndex].audio.Close();
 
@@ -136,7 +92,7 @@ namespace BeatMerge
             bool ignoringEvents = checkIgnoreEvents.Checked;
             bool ignoringObstacles = checkIgnoreObstacles.Checked;
 
-            SongPack currentSongPack = songPacks[listSongPacks.SelectedIndex];
+            SongPack currentSongPack = songPackManager.songPacks[listSongPacks.SelectedIndex];
 
             // Move the notes to a way that changes the bpm of the map
             foreach (var customMap in currentSongPack.CustomMaps)
@@ -213,21 +169,6 @@ namespace BeatMerge
         {
             string[] folders = fileName.Split('\\');
             return folders[folders.Length - 2] + " - " + folders.Last().Replace(".dat", "");
-        }
-
-        private void ReLoadSongPacks()
-        {
-            listMap.Items.Clear();
-            listSongPacks.Items.Clear();
-            songPacks.Clear();
-
-            foreach (var directory in Directory.GetDirectories(songPackFolder))
-            {
-                SongPack songPack = new SongPack(directory, false);
-                songPacks.Add(songPack);
-
-                listSongPacks.Items.Add(directory.Split('\\').Last());
-            }
         }
 
         #endregion
