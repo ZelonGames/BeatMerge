@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,7 +68,8 @@ namespace BeatMerge
 
         private void btnMerge_Click(object sender, EventArgs e)
         {
-            MapsMergerHelper.MergeMaps(this, songPackManager.GetCurrentSongPack());
+            SongPack currentSongPack = songPackManager.GetCurrentSongPack();
+            Task.Run(() => MapsMergerHelper.MergeMaps(this, currentSongPack));
         }
 
         #endregion

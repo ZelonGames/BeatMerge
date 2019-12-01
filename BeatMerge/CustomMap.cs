@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
@@ -14,12 +15,12 @@ namespace BeatMerge
 {
     public class CustomMap
     {
-        public readonly VorbisWaveReader audio;
+        public VorbisWaveReader audio { get; private set; }
 
-        public readonly Map map;
-        public readonly SongInfo info;
+        public Map map { get; private set; }
+        public SongInfo info { get; private set; }
 
-        public readonly string audioPath;
+        public string audioPath { get; private set; }
         public readonly string difficultyPath;
         public readonly string infoPath;
         public readonly string directoryPath;
@@ -31,7 +32,7 @@ namespace BeatMerge
         {
             difficultyPath = selectedFile;
             string[] folders = difficultyPath.Split('\\');
-            directoryPath = SongPackManager.songPackFolder + "/" + selectedSongPackName + "/" + folders[folders.Length - 2];
+            directoryPath = SongPackManager.SONG_PACK_FOLDER + "/" + selectedSongPackName + "/" + folders[folders.Length - 2];
 
             string[] selectedPathFolders = selectedFile.Split('\\');
             string selectedDirectoryPath = selectedFile.Replace(selectedPathFolders.Last(), "").Replace("\\", "/");
@@ -39,6 +40,7 @@ namespace BeatMerge
 
             infoFile = selectedDirectoryPath + "info.dat";
             infoPath = directoryPath + "/info.dat";
+
 
             if (createFile)
             {

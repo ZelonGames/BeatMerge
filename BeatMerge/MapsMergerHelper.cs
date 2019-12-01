@@ -84,6 +84,13 @@ namespace BeatMerge
 
                 Directory.CreateDirectory(mergedDirectory);
 
+                Directory.CreateDirectory(mergedDirectory + "/Audio Files");
+                for (int i = 0; i < currentSongPack.CustomMaps.Count; i++)
+                {
+                    CustomMap custmMap = currentSongPack.CustomMaps[i];
+                    File.Copy(custmMap.audioPath, mergedDirectory + "/Audio Files/" + i + Path.GetExtension(custmMap.audioPath));
+                }
+
                 string difficulty = mergedDirectory + "/" + firstSongInfo._difficultyBeatmapSets.First()._difficultyBeatmaps.First()._beatmapFilename;
                 using (StreamWriter wr = new StreamWriter(difficulty))
                     wr.WriteLine(JsonConvert.SerializeObject(mergedMap));

@@ -8,14 +8,14 @@ using System.Windows.Forms;
 
 namespace BeatMerge
 {
-    public class SongPackManager
+    public sealed class SongPackManager
     {
         #region Fields
 
         public List<SongPack> songPacks = new List<SongPack>();
         public readonly Form1 form;
 
-        public const string songPackFolder = "SongPacks";
+        public const string SONG_PACK_FOLDER = "SongPacks";
 
         #endregion
 
@@ -32,10 +32,10 @@ namespace BeatMerge
             if (string.IsNullOrEmpty(songPackInputName))
                 return;
 
-            if (!Directory.Exists(songPackFolder))
-                Directory.CreateDirectory(songPackFolder);
+            if (!Directory.Exists(SONG_PACK_FOLDER))
+                Directory.CreateDirectory(SONG_PACK_FOLDER);
 
-            string songPackName = songPackFolder + "/" + songPackInputName;
+            string songPackName = SONG_PACK_FOLDER + "/" + songPackInputName;
             songPacks.Add(new SongPack(songPackName, true));
             ReLoadSongPacks();
         }
@@ -79,7 +79,7 @@ namespace BeatMerge
             form.listSongPacks.Items.Clear();
             songPacks.Clear();
 
-            foreach (var directory in Directory.GetDirectories(songPackFolder))
+            foreach (var directory in Directory.GetDirectories(SONG_PACK_FOLDER))
             {
                 SongPack songPack = new SongPack(directory, false);
                 songPacks.Add(songPack);
@@ -90,6 +90,9 @@ namespace BeatMerge
 
         public SongPack GetCurrentSongPack()
         {
+            if (form.listSongPacks.SelectedIndex < 0)
+                form.listSongPacks.SelectedIndex = 0;
+
             return songPacks[form.listSongPacks.SelectedIndex];
         }
 

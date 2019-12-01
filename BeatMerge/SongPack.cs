@@ -11,43 +11,72 @@ using BeatMerge.Items;
 
 namespace BeatMerge
 {
-    public class SongPack
+    public sealed class SongPack
     {
         public List<CustomMap> CustomMaps { get; private set; }
 
         public readonly string path;
+        public readonly string songPackOrderFile;
 
         public string DisplayName => path.Split('\\').Last();
 
         public SongPack(string path, bool createDirectory)
         {
             this.path = path;
+            songPackOrderFile = this.path + "/songPackOrder.txt";
+
             if (createDirectory)
                 Directory.CreateDirectory(path);
         }
 
-        public void AddMap(string filename, string songPackName, bool createFile, ListBox listMap)
+        public async Task AddMap(string filename, string songPackName, bool createFile, ListBox listMap)
         {
-            var customMap = new CustomMap(filename, songPackName, createFile);
+            CustomMap customMap = null;
+
+            await Task.Run(() => {
+                customMap = new CustomMap(filename, songPackName, createFile);
+            });
+
             listMap.Items.Add(customMap.displayName);
             CustomMaps.Add(customMap);
-
-            string jsonData = File.ReadAllText(customMap.difficultyPath);
-            Map currentMap = JsonConvert.DeserializeObject<Map>(jsonData);
-            Map.GetBeatLengthInSeconds(currentMap._beatsPerMinute);
         }
 
-        public void ReloadMapsListInCurrentSongPack(ListBox listMap)
+        public void ReloadSongPackOrderFile()
+        {
+            if (!File.Exists(songPackOrderFile))
+                File.Create(songPackOrderFile).Close();
+
+            using (var wr = new StreamWriter(songPackOrderFile, false))
+            {
+                foreach (var map in CustomMaps)
+                {
+                    wr.WriteLine(map.directoryPath);
+                }
+            }
+        }
+
+        public async void ReloadMapsListInCurrentSongPack(ListBox listMap)
         {
             listMap.Items.Clear();
             CustomMaps = new List<CustomMap>();
-            foreach (var directory in Directory.GetDirectories(path))
+
+            string[] directories = File.Exists(songPackOrderFile) ? File.ReadAllLines(songPackOrderFile) : Directory.GetDirectories(path);
+
+            if (!File.Exists(songPackOrderFile))
+            {
+                File.Create(songPackOrderFile).Close();
+
+                File.WriteAllLines(songPackOrderFile, directories);
+            }
+
+
+            foreach (var directory in directories)
             {
                 string[] files = Directory.GetFiles(directory, "*.dat");
                 string file = files.Where(x => x.Split('\\').Last() != "info.dat").First();
 
                 // The files are already created so just add it to the listbox
-                AddMap(file, DisplayName, false, listMap);
+                await AddMap(file, DisplayName, false, listMap);
             }
         }
     }

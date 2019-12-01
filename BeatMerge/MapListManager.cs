@@ -54,5 +54,19 @@ namespace BeatMerge
                 MessageBox.Show(ex.ToString());
             }
         }
+
+        public void SwapItems(SongPack songPack, CustomMap map1, CustomMap map2)
+        {
+            int map1Index = songPack.CustomMaps.IndexOf(map1);
+            int map2Index = songPack.CustomMaps.IndexOf(map2);
+
+            songPack.CustomMaps.Remove(map1);
+            songPack.CustomMaps.Remove(map2);
+
+            songPack.CustomMaps.Insert(map1Index, map2);
+            songPack.CustomMaps.Insert(map2Index, map1);
+
+            songPack.ReloadSongPackOrderFile();
+        }
     }
 }
