@@ -79,6 +79,9 @@ namespace BeatMerge
             form.listSongPacks.Items.Clear();
             songPacks.Clear();
 
+            if (!Directory.Exists(SONG_PACK_FOLDER))
+                Directory.CreateDirectory(SONG_PACK_FOLDER);
+
             foreach (var directory in Directory.GetDirectories(SONG_PACK_FOLDER))
             {
                 SongPack songPack = new SongPack(directory, false);
