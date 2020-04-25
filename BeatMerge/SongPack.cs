@@ -20,11 +20,11 @@ namespace BeatMerge
         public readonly string path;
         public readonly string songPackOrderFile;
 
-        public string DisplayName => path.Split('\\').Last();
+        public string DisplayName => path.Split('/').Last();
 
         public SongPack(string path, bool createDirectory)
         {
-            this.path = path;
+            this.path = path.Replace("\\", "/");
             songPackOrderFile = this.path + "/songPackOrder.txt";
 
             if (createDirectory)
@@ -41,6 +41,14 @@ namespace BeatMerge
 
             listMap.Items.Add(customMap.displayName);
             CustomMaps.Add(customMap);
+
+            if (createFile)
+            {
+                using (StreamWriter wr = new StreamWriter(songPackOrderFile, true))
+                {
+                    wr.WriteLine(customMap.directoryPath);
+                }
+            }
         }
 
         public void ReloadSongPackOrderFile()
@@ -64,17 +72,12 @@ namespace BeatMerge
 
             string[] directories = File.Exists(songPackOrderFile) ? File.ReadAllLines(songPackOrderFile) : Directory.GetDirectories(path);
 
-            if (!File.Exists(songPackOrderFile))
-            {
-                File.Create(songPackOrderFile).Close();
-
-                File.WriteAllLines(songPackOrderFile, directories);
-            }
-
-
             foreach (var directory in directories)
             {
                 string[] files = Directory.GetFiles(directory, "*.dat");
+                if (files.Length == 0)
+                    return;
+
                 string file = files.Where(x => x.Split('\\').Last() != "info.dat").First();
 
                 // The files are already created so just add it to the listbox

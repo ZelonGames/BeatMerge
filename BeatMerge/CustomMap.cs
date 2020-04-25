@@ -24,8 +24,8 @@ namespace BeatMerge
 
         public CustomMap(string selectedFile, string selectedSongPackName, bool createFile)
         {
-            difficultyPath = selectedFile;
-            string[] folders = difficultyPath.Split('\\');
+            difficultyPath = selectedFile.Replace("\\", "/");
+            string[] folders = difficultyPath.Split('/');
             directoryPath = SongPackManager.SONG_PACK_FOLDER + "/" + selectedSongPackName + "/" + folders[folders.Length - 2];
 
             string[] selectedPathFolders = selectedFile.Split('\\');

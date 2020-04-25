@@ -47,10 +47,7 @@ namespace BeatMerge
 
             if (Directory.Exists(songPack.path))
             {
-                foreach (var file in Directory.GetFiles(songPack.path))
-                    File.Delete(file);
-
-                Directory.Delete(songPack.path);
+                Directory.Delete(songPack.path, true);
             }
             else
                 MessageBox.Show("This song pack doesn't exist!");
