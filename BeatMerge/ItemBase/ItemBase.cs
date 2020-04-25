@@ -1,11 +1,8 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
 
-namespace BeatMerge.Items
+
+namespace BeatMerge.ItemBase
 {
     public abstract class ItemBase
     {
@@ -20,7 +17,7 @@ namespace BeatMerge.Items
         {
             foreach (var item in items)
             {
-                item._time *= Map.GetBeatLengthInSeconds(bpm);
+                item._time *= Difficulty.Rootobject.GetBeatLengthInSeconds(bpm);
                 mergedItems.Add(item);
             }
         }
@@ -29,7 +26,7 @@ namespace BeatMerge.Items
         {
             foreach (var item in items)
             {
-                item._time = Map.SecondsToBeats(bpm, item._time);
+                item._time = Difficulty.Rootobject.SecondsToBeats(bpm, item._time);
             }
         }
 

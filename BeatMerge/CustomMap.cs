@@ -1,14 +1,8 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
-
-using BeatMerge.Items;
 using NAudio.Vorbis;
 
 namespace BeatMerge
@@ -17,8 +11,8 @@ namespace BeatMerge
     {
         public VorbisWaveReader audio { get; private set; }
 
-        public Map map { get; private set; }
-        public SongInfo info { get; private set; }
+        public Difficulty.Rootobject map { get; private set; }
+        public Info.Rootobject info { get; private set; }
 
         public string audioPath { get; private set; }
         public readonly string difficultyPath;
@@ -36,9 +30,7 @@ namespace BeatMerge
 
             string[] selectedPathFolders = selectedFile.Split('\\');
             string selectedDirectoryPath = selectedFile.Replace(selectedPathFolders.Last(), "").Replace("\\", "/");
-            string infoFile = "";
-
-            infoFile = selectedDirectoryPath + "info.dat";
+            string infoFile = selectedDirectoryPath + "info.dat";
             infoPath = directoryPath + "/info.dat";
 
 
@@ -67,8 +59,8 @@ namespace BeatMerge
             string difficultyJsonData = File.ReadAllText(difficultyPath);
             string infoJsonData = File.ReadAllText(infoPath);
 
-            map = JsonConvert.DeserializeObject<Map>(difficultyJsonData);
-            info = JsonConvert.DeserializeObject<SongInfo>(infoJsonData);
+            map = JsonConvert.DeserializeObject<Difficulty.Rootobject>(difficultyJsonData);
+            info = JsonConvert.DeserializeObject<Info.Rootobject>(infoJsonData);
 
             audioPath = directoryPath + "/" + info._songFilename;
 

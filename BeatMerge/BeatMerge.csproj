@@ -76,12 +76,9 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Items\Event.cs" />
-    <Compile Include="Items\ItemBase.cs" />
-    <Compile Include="Items\Map.cs" />
-    <Compile Include="Items\Note.cs" />
-    <Compile Include="Items\Obstacle.cs" />
-    <Compile Include="Items\SongInfo.cs" />
+    <Compile Include="Difficulty\Difficulty.cs" />
+    <Compile Include="Info\Info.cs" />
+    <Compile Include="ItemBase\ItemBase.cs" />
     <Compile Include="CustomMap.cs" />
     <Compile Include="MapListManager.cs" />
     <Compile Include="MapsMergerHelper.cs" />
