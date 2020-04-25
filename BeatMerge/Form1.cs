@@ -7,7 +7,9 @@ using System.Linq;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 
-using BeatMerge.Items;
+using BeatMerge.Difficulty;
+using BeatMerge.Info;
+using BeatMerge.ItemBase;
 
 namespace BeatMerge
 {

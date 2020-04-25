@@ -1,28 +1,17 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace BeatMerge.Items
+namespace BeatMerge.Difficulty
 {
-    public class Map
+    public class Rootobject
     {
-        public double _beatsPerMinute { get; set; }
-
-        public Event[] _events { get; set; }
-        public Note[] _notes { get; set; }
-        public Obstacle[] _obstacles { get; set; }
-
-        public Map(double beatsPerMinute, Event[] events, Note[] notes, Obstacle[] obstacles)
-        {
-            this._beatsPerMinute = beatsPerMinute;
-
-            this._events = events;
-            this._notes = notes;
-            this._obstacles = obstacles;
-        }
+        public string _version { get; set; }
+        public _Events[] _events { get; set; }
+        public _Notes[] _notes { get; set; }
+        public _Obstacles[] _obstacles { get; set; }
+        public _Customdata _customData { get; set; }
 
         public void Create(string path)
         {
@@ -86,5 +75,56 @@ namespace BeatMerge.Items
         {
             return 60000d / bpm;
         }
+    }
+
+    public class _Customdata
+    {
+        public float _time { get; set; }
+        public object[] _BPMChanges { get; set; }
+        public object[] _bookmarks { get; set; }
+    }
+
+    public class _Events : ItemBase.ItemBase
+    {
+        public _Events(int type, int value, double time) : base(time)
+        {
+            _type = type;
+            _value = value;
+        }
+
+        public int _type { get; set; }
+        public int _value { get; set; }
+    }
+
+    public class _Notes : ItemBase.ItemBase
+    {
+        public _Notes(int lineIndex, int lineLayer, int type, int cutDirection, double time) : base(time)
+        {
+            _lineIndex = lineIndex;
+            _lineLayer = lineLayer;
+            _type = type;
+            _cutDirection = cutDirection;
+        }
+
+        public int _lineIndex { get; set; }
+        public int _lineLayer { get; set; }
+        public int _type { get; set; }
+        public int _cutDirection { get; set; }
+    }
+
+    public class _Obstacles : ItemBase.ItemBase
+    {
+        public _Obstacles(int lineIndex, int type, double duration, int width, double time) : base(time)
+        {
+            _lineIndex = lineIndex;
+            _type = type;
+            _duration = duration;
+            _width = width;
+        }
+
+        public int _lineIndex { get; set; }
+        public int _type { get; set; }
+        public double _duration { get; set; }
+        public int _width { get; set; }
     }
 }
