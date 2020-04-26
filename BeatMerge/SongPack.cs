@@ -20,10 +20,11 @@ namespace BeatMerge
         public readonly string path;
         public readonly string songPackOrderFile;
 
-        public string DisplayName => path.Split('\\').Last();
+        public string DisplayName => path.Split('/').Last();
 
         public SongPack(string path, bool createDirectory)
         {
+
             this.path = path;
             songPackOrderFile = this.path + "\\songPackOrder.txt";
 
@@ -41,6 +42,14 @@ namespace BeatMerge
 
             listMap.Items.Add(customMap.displayName);
             CustomMaps.Add(customMap);
+
+            if (createFile)
+            {
+                using (StreamWriter wr = new StreamWriter(songPackOrderFile, true))
+                {
+                    wr.WriteLine(customMap.directoryPath);
+                }
+            }
         }
 
         public void ReloadSongPackOrderFile()
@@ -83,6 +92,7 @@ namespace BeatMerge
 
             List<string> news = new List<string>();
             string[] directories = Directory.GetDirectories(path);
+
 
             if(File.Exists(songPackOrderFile))
             {
