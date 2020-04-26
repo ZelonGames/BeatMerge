@@ -24,7 +24,8 @@ namespace BeatMerge
 
         public CustomMap(string selectedFile, string selectedSongPackName, bool createFile)
         {
-            difficultyPath = selectedFile.Replace("\\", "/");
+            selectedSongPackName = selectedSongPackName.Replace("\\", "/");
+               difficultyPath = selectedFile.Replace("\\", "/");
             string[] folders = difficultyPath.Split('/');
             directoryPath = selectedSongPackName + "/" + folders[folders.Length - 2];
 
@@ -76,7 +77,15 @@ namespace BeatMerge
                 }
             }
 
-            audio = new VorbisWaveReader(audioPath);
+            try
+            {
+                audio = new VorbisWaveReader(audioPath);
+                audio.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
     }
 }

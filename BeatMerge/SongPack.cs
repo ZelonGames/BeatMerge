@@ -124,6 +124,9 @@ namespace BeatMerge
             foreach (var directory in news)
             {
                 string[] files = Directory.GetFiles(directory, "*.dat");
+                if (files.Length == 0)
+                    continue;
+
                 string file = files.Where(x => x.Split('/').Last() != "info.dat").First();
 
                 // The files are already created so just add it to the listbox

@@ -112,7 +112,7 @@ namespace BeatMerge
                 {
                     WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
                     FileName = "cmd.exe",
-                    Arguments = "/C cd " + AppDomain.CurrentDomain.BaseDirectory + mergedDirectory + "\\Audio Files\\"
+                    Arguments = "/C cd " + AppDomain.CurrentDomain.BaseDirectory + mergedDirectory
                 };
                 startInfo.Arguments += " & copy /b";
                 for (int i = 0; i < currentSongPack.CustomMaps.Count; i++)

@@ -39,8 +39,6 @@ namespace BeatMerge
         {
             try
             {
-                songPack.CustomMaps[form.listMap.SelectedIndex].audio.Close();
-
                 string directory = songPack.CustomMaps[form.listMap.SelectedIndex].directoryPath;
                 if (Directory.Exists(directory))
                     Directory.Delete(directory, true);
