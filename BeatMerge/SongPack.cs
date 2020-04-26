@@ -36,7 +36,8 @@ namespace BeatMerge
         {
             CustomMap customMap = null;
 
-            await Task.Run(() => {
+            await Task.Run(() =>
+            {
                 customMap = new CustomMap(filename, songPackName, createFile);
             });
 
@@ -87,6 +88,9 @@ namespace BeatMerge
 
         public async void ReloadMapsListInCurrentSongPack(ListBox listMap)
         {
+            if (CustomMaps != null)
+                CustomMaps.ForEach(x => x.audio.Close());
+
             listMap.Items.Clear();
             CustomMaps = new List<CustomMap>();
 
@@ -94,7 +98,7 @@ namespace BeatMerge
             string[] directories = Directory.GetDirectories(path);
 
 
-            if(File.Exists(songPackOrderFile))
+            if (File.Exists(songPackOrderFile))
             {
                 news.AddRange(File.ReadAllLines(songPackOrderFile));
             }
@@ -102,18 +106,18 @@ namespace BeatMerge
             {
                 File.Create(songPackOrderFile).Close();
             }
-            
+
             foreach (var x in directories)
             {
-                if(!news.Contains(x))
+                if (!news.Contains(x))
                 {
                     news.Add(x);
                 }
             }
 
-            for(int i = 0; i < news.Count(); i++)
+            for (int i = 0; i < news.Count(); i++)
             {
-                if(!directories.Contains(news[i]))
+                if (!directories.Contains(news[i]))
                 {
                     news.RemoveAt(i);
                 }

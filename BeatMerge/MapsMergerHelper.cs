@@ -92,11 +92,10 @@ namespace BeatMerge
 
                 Directory.CreateDirectory(mergedDirectory);
 
-                Directory.CreateDirectory(mergedDirectory + "/Audio Files");
                 for (int i = 0; i < currentSongPack.CustomMaps.Count; i++)
                 {
                     CustomMap custmMap = currentSongPack.CustomMaps[i];
-                    File.Copy(custmMap.audioPath, mergedDirectory + "/Audio Files/" + i + Path.GetExtension(custmMap.audioPath));
+                    File.Copy(custmMap.audioPath, mergedDirectory + "/" + i + Path.GetExtension(custmMap.audioPath));
                 }
 
                 string difficulty = mergedDirectory + "/" + firstSongInfo._difficultyBeatmapSets.First()._difficultyBeatmaps.First()._beatmapFilename;
@@ -112,7 +111,7 @@ namespace BeatMerge
                 {
                     WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
                     FileName = "cmd.exe",
-                    Arguments = "/C cd " + AppDomain.CurrentDomain.BaseDirectory + mergedDirectory
+                    Arguments = "/C cd " + AppDomain.CurrentDomain.BaseDirectory + mergedDirectory + "\\"
                 };
                 startInfo.Arguments += " & copy /b";
                 for (int i = 0; i < currentSongPack.CustomMaps.Count; i++)
@@ -135,7 +134,7 @@ namespace BeatMerge
                 for (int i = 0; i < currentSongPack.CustomMaps.Count; i++)
                 {
                     CustomMap custmMap = currentSongPack.CustomMaps[i];
-                    File.Delete(mergedDirectory + "/Audio Files/" + i + Path.GetExtension(custmMap.audioPath));
+                    File.Delete(mergedDirectory + "/" + i + Path.GetExtension(custmMap.audioPath));
                 }
 
                 MessageBox.Show("A new folder called " + mergedDirectory + " has been created");

@@ -34,7 +34,6 @@ namespace BeatMerge
             string infoFile = selectedDirectoryPath + "info.dat";
             infoPath = directoryPath + "/info.dat";
 
-
             if (createFile)
             {
                 Directory.CreateDirectory(directoryPath);
@@ -80,7 +79,6 @@ namespace BeatMerge
             try
             {
                 audio = new VorbisWaveReader(audioPath);
-                audio.Close();
             }
             catch (Exception ex)
             {
