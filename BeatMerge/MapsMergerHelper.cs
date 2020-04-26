@@ -14,7 +14,7 @@ namespace BeatMerge
     {
         public static void MergeMaps(Form1 form, SongPack currentSongPack)
         {
-            double newBPM = 0;
+            double newBPM;
             try
             {
                 newBPM = Convert.ToDouble(form.txtNewBpm.Text);
@@ -56,7 +56,7 @@ namespace BeatMerge
                 if (currentMapLengthInBeats.HasValue)
                 {
                     double startOffsetInBeats = Rootobject.MSToBeats(customMap.info._beatsPerMinute, customMap.info._difficultyBeatmapSets.First()._difficultyBeatmaps.First()._customData._editorOffset);
-                    double distanceToMove = currentMapLengthInBeats.Value - startOffsetInBeats;
+                    double distanceToMove = currentMapLengthInBeats.Value; // - startOffsetInBeats;
                     ItemBase.ItemBase.MoveItems(customMap.map._notes, distanceToMove);
                     if (!ignoringEvents)
                         ItemBase.ItemBase.MoveItems(customMap.map._events, distanceToMove);
@@ -106,6 +106,37 @@ namespace BeatMerge
                 string info = mergedDirectory + "/info.dat";
                 using (StreamWriter wr = new StreamWriter(info))
                     wr.WriteLine(JsonConvert.SerializeObject(firstSongInfo));
+
+                System.Diagnostics.Process process = new System.Diagnostics.Process();
+                System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo
+                {
+                    WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+                    FileName = "cmd.exe",
+                    Arguments = "/C cd " + AppDomain.CurrentDomain.BaseDirectory + mergedDirectory + "\\Audio Files\\"
+                };
+                startInfo.Arguments += " & copy /b";
+                for (int i = 0; i < currentSongPack.CustomMaps.Count; i++)
+                {
+                    CustomMap custmMap = currentSongPack.CustomMaps[i];
+                    if (i == 0)
+                    {
+                        startInfo.Arguments += " " + i + Path.GetExtension(custmMap.audioPath);
+                    }
+                    else
+                    {
+                        startInfo.Arguments += " +" + i + Path.GetExtension(custmMap.audioPath);
+                    }
+                }
+                startInfo.Arguments += " song.ogg";
+                process.StartInfo = startInfo;
+                process.Start();
+                process.WaitForExit();
+
+                for (int i = 0; i < currentSongPack.CustomMaps.Count; i++)
+                {
+                    CustomMap custmMap = currentSongPack.CustomMaps[i];
+                    File.Delete(mergedDirectory + "/Audio Files/" + i + Path.GetExtension(custmMap.audioPath));
+                }
 
                 MessageBox.Show("A new folder called " + mergedDirectory + " has been created");
             }

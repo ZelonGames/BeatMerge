@@ -25,7 +25,7 @@ namespace BeatMerge
         public SongPack(string path, bool createDirectory)
         {
             this.path = path;
-            songPackOrderFile = this.path + "/songPackOrder.txt";
+            songPackOrderFile = this.path + "\\songPackOrder.txt";
 
             if (createDirectory)
                 Directory.CreateDirectory(path);
@@ -45,16 +45,35 @@ namespace BeatMerge
 
         public void ReloadSongPackOrderFile()
         {
-            if (!File.Exists(songPackOrderFile))
-                File.Create(songPackOrderFile).Close();
+            List<string> news = new List<string>();
+            string[] directories = Directory.GetDirectories(path);
 
-            using (var wr = new StreamWriter(songPackOrderFile, false))
+            if (File.Exists(songPackOrderFile))
             {
-                foreach (var map in CustomMaps)
+                news.AddRange(File.ReadAllLines(songPackOrderFile));
+            }
+            else
+            {
+                File.Create(songPackOrderFile).Close();
+            }
+
+            foreach (var x in directories)
+            {
+                if (!news.Contains(x))
                 {
-                    wr.WriteLine(map.directoryPath);
+                    news.Add(x);
                 }
             }
+
+            for (int i = 0; i < news.Count(); i++)
+            {
+                if (!directories.Contains(news[i]))
+                {
+                    news.RemoveAt(i);
+                }
+            }
+
+            File.WriteAllLines(songPackOrderFile, news);
         }
 
         public async void ReloadMapsListInCurrentSongPack(ListBox listMap)
@@ -62,20 +81,40 @@ namespace BeatMerge
             listMap.Items.Clear();
             CustomMaps = new List<CustomMap>();
 
-            string[] directories = File.Exists(songPackOrderFile) ? File.ReadAllLines(songPackOrderFile) : Directory.GetDirectories(path);
+            List<string> news = new List<string>();
+            string[] directories = Directory.GetDirectories(path);
 
-            if (!File.Exists(songPackOrderFile))
+            if(File.Exists(songPackOrderFile))
+            {
+                news.AddRange(File.ReadAllLines(songPackOrderFile));
+            }
+            else
             {
                 File.Create(songPackOrderFile).Close();
-
-                File.WriteAllLines(songPackOrderFile, directories);
+            }
+            
+            foreach (var x in directories)
+            {
+                if(!news.Contains(x))
+                {
+                    news.Add(x);
+                }
             }
 
+            for(int i = 0; i < news.Count(); i++)
+            {
+                if(!directories.Contains(news[i]))
+                {
+                    news.RemoveAt(i);
+                }
+            }
 
-            foreach (var directory in directories)
+            File.WriteAllLines(songPackOrderFile, news);
+
+            foreach (var directory in news)
             {
                 string[] files = Directory.GetFiles(directory, "*.dat");
-                string file = files.Where(x => x.Split('\\').Last() != "info.dat").First();
+                string file = files.Where(x => x.Split('/').Last() != "info.dat").First();
 
                 // The files are already created so just add it to the listbox
                 await AddMap(file, DisplayName, false, listMap);
