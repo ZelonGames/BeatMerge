@@ -7,7 +7,9 @@ using System.Linq;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 
-using BeatMerge.Items;
+using BeatMerge.Difficulty;
+using BeatMerge.Info;
+using BeatMerge.ItemBase;
 
 namespace BeatMerge
 {
@@ -29,6 +31,8 @@ namespace BeatMerge
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
+
             songPackManager = new SongPackManager(this);
             songPackManager.ReLoadSongPacks();
 

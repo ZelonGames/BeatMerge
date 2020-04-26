@@ -1,46 +1,39 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
-
-using BeatMerge.Items;
 using NAudio.Vorbis;
 
 namespace BeatMerge
 {
     public class CustomMap
     {
-        public VorbisWaveReader audio { get; private set; }
+        private VorbisWaveReader audio;
 
-        public Map map { get; private set; }
-        public SongInfo info { get; private set; }
-
-        public string audioPath { get; private set; }
         public readonly string difficultyPath;
         public readonly string infoPath;
         public readonly string directoryPath;
         public readonly string displayName;
-
+        public readonly double SongLengthInMilliSeconds;
         public readonly int songLengthInMS;
+
+        public Difficulty.Rootobject map { get; private set; }
+        public Info.Rootobject info { get; private set; }
+
+        public string audioPath { get; private set; }
 
         public CustomMap(string selectedFile, string selectedSongPackName, bool createFile)
         {
-            difficultyPath = selectedFile;
-            string[] folders = difficultyPath.Split('\\');
-            directoryPath = SongPackManager.SONG_PACK_FOLDER + "/" + selectedSongPackName + "/" + folders[folders.Length - 2];
+            selectedSongPackName = selectedSongPackName.Replace("\\", "/");
+               difficultyPath = selectedFile.Replace("\\", "/");
+            string[] folders = difficultyPath.Split('/');
+            directoryPath = selectedSongPackName + "/" + folders[folders.Length - 2];
 
             string[] selectedPathFolders = selectedFile.Split('\\');
             string selectedDirectoryPath = selectedFile.Replace(selectedPathFolders.Last(), "").Replace("\\", "/");
-            string infoFile = "";
-
-            infoFile = selectedDirectoryPath + "info.dat";
+            string infoFile = selectedDirectoryPath + "info.dat";
             infoPath = directoryPath + "/info.dat";
-
 
             if (createFile)
             {
@@ -67,8 +60,8 @@ namespace BeatMerge
             string difficultyJsonData = File.ReadAllText(difficultyPath);
             string infoJsonData = File.ReadAllText(infoPath);
 
-            map = JsonConvert.DeserializeObject<Map>(difficultyJsonData);
-            info = JsonConvert.DeserializeObject<SongInfo>(infoJsonData);
+            map = JsonConvert.DeserializeObject<Difficulty.Rootobject>(difficultyJsonData);
+            info = JsonConvert.DeserializeObject<Info.Rootobject>(infoJsonData);
 
             audioPath = directoryPath + "/" + info._songFilename;
 
@@ -84,7 +77,16 @@ namespace BeatMerge
                 }
             }
 
-            audio = new VorbisWaveReader(audioPath);
+            try
+            {
+                audio = new VorbisWaveReader(audioPath);
+                SongLengthInMilliSeconds = audio.TotalTime.TotalMilliseconds;
+                audio.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
     }
 }

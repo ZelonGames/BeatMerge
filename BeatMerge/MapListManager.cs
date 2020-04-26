@@ -17,7 +17,7 @@ namespace BeatMerge
             this.form = form;
         }
 
-        public void AddMap(SongPack songPack)
+        public async void AddMap(SongPack songPack)
         {
             using (var openFileDialog = new OpenFileDialog())
             {
@@ -28,7 +28,7 @@ namespace BeatMerge
                     if (openFileDialog.FileName == "info.dat")
                         MessageBox.Show("You must select a difficulty .dat file!");
                     else if (openFileDialog.FileName.EndsWith(".dat"))
-                        songPack.AddMap(openFileDialog.FileName, songPack.DisplayName, true, form.listMap);
+                        await songPack.AddMap(openFileDialog.FileName, songPack.DisplayName, true, form.listMap);
                     else
                         MessageBox.Show("You must select a .dat file!");
                 }
@@ -39,11 +39,11 @@ namespace BeatMerge
         {
             try
             {
-                songPack.CustomMaps[form.listMap.SelectedIndex].audio.Close();
-
                 string directory = songPack.CustomMaps[form.listMap.SelectedIndex].directoryPath;
                 if (Directory.Exists(directory))
+                {
                     Directory.Delete(directory, true);
+                }
                 else
                     MessageBox.Show("This map doesn't exist!");
 
