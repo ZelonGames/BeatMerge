@@ -25,7 +25,7 @@ namespace BeatMerge
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    if (openFileDialog.FileName == "info.dat")
+                    if (openFileDialog.FileName.Contains("info.dat"))
                         MessageBox.Show("You must select a difficulty .dat file!");
                     else if (openFileDialog.FileName.EndsWith(".dat"))
                         await songPack.AddMap(openFileDialog.FileName, songPack.DisplayName, true, form.listMap);
