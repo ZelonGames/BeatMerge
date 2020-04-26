@@ -26,7 +26,7 @@ namespace BeatMerge
         {
             difficultyPath = selectedFile.Replace("\\", "/");
             string[] folders = difficultyPath.Split('/');
-            directoryPath = SongPackManager.SONG_PACK_FOLDER + "/" + selectedSongPackName + "/" + folders[folders.Length - 2];
+            directoryPath = selectedSongPackName + "/" + folders[folders.Length - 2];
 
             string[] selectedPathFolders = selectedFile.Split('\\');
             string selectedDirectoryPath = selectedFile.Replace(selectedPathFolders.Last(), "").Replace("\\", "/");

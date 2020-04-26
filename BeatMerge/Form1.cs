@@ -31,6 +31,8 @@ namespace BeatMerge
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
+
             songPackManager = new SongPackManager(this);
             songPackManager.ReLoadSongPacks();
 
