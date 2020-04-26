@@ -66,7 +66,7 @@ namespace BeatMerge
 
                 if (!currentMapLengthInBeats.HasValue)
                     currentMapLengthInBeats = 0;
-                currentMapLengthInBeats += customMap.audio.TotalTime.TotalMilliseconds / Rootobject.GetBeatLengthInMS(newBPM);
+                currentMapLengthInBeats += customMap.SongLengthInMilliSeconds / Rootobject.GetBeatLengthInMS(newBPM);
             }
             ///////////////////////////////////////////////////////////////////////////////////////////////////////
             // TODO customData need to be implemented                                                            //

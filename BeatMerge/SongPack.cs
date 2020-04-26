@@ -88,9 +88,6 @@ namespace BeatMerge
 
         public async void ReloadMapsListInCurrentSongPack(ListBox listMap)
         {
-            if (CustomMaps != null)
-                CustomMaps.ForEach(x => x.audio.Close());
-
             listMap.Items.Clear();
             CustomMaps = new List<CustomMap>();
 

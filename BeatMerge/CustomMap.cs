@@ -9,18 +9,19 @@ namespace BeatMerge
 {
     public class CustomMap
     {
-        public VorbisWaveReader audio { get; private set; }
+        private VorbisWaveReader audio;
+
+        public readonly string difficultyPath;
+        public readonly string infoPath;
+        public readonly string directoryPath;
+        public readonly string displayName;
+        public readonly double SongLengthInMilliSeconds;
+        public readonly int songLengthInMS;
 
         public Difficulty.Rootobject map { get; private set; }
         public Info.Rootobject info { get; private set; }
 
         public string audioPath { get; private set; }
-        public readonly string difficultyPath;
-        public readonly string infoPath;
-        public readonly string directoryPath;
-        public readonly string displayName;
-
-        public readonly int songLengthInMS;
 
         public CustomMap(string selectedFile, string selectedSongPackName, bool createFile)
         {
@@ -79,6 +80,8 @@ namespace BeatMerge
             try
             {
                 audio = new VorbisWaveReader(audioPath);
+                SongLengthInMilliSeconds = audio.TotalTime.TotalMilliseconds;
+                audio.Close();
             }
             catch (Exception ex)
             {
