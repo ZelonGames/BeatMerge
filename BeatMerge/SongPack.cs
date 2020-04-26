@@ -95,7 +95,7 @@ namespace BeatMerge
             string[] directories = Directory.GetDirectories(path);
 
 
-            if (File.Exists(songPackOrderFile))
+            if(File.Exists(songPackOrderFile))
             {
                 news.AddRange(File.ReadAllLines(songPackOrderFile));
             }
@@ -103,18 +103,18 @@ namespace BeatMerge
             {
                 File.Create(songPackOrderFile).Close();
             }
-
+            
             foreach (var x in directories)
             {
-                if (!news.Contains(x))
+                if(!news.Contains(x))
                 {
                     news.Add(x);
                 }
             }
 
-            for (int i = 0; i < news.Count(); i++)
+            for(int i = 0; i < news.Count(); i++)
             {
-                if (!directories.Contains(news[i]))
+                if(!directories.Contains(news[i]))
                 {
                     news.RemoveAt(i);
                 }
@@ -125,13 +125,26 @@ namespace BeatMerge
             foreach (var directory in news)
             {
                 string[] files = Directory.GetFiles(directory, "*.dat");
-                if (files.Length == 0)
-                    continue;
-
-                string file = files.Where(x => x.Split('/').Last() != "info.dat").First();
+                string file = null;
+                    
+                foreach (var x in files)
+                {
+                    if (x.Contains("info.dat"))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        file = x;
+                        break;
+                    }
+                }
 
                 // The files are already created so just add it to the listbox
-                await AddMap(file, DisplayName, false, listMap);
+                if (file != null)
+                {
+                    await AddMap(file, DisplayName, false, listMap);
+                }
             }
         }
     }
