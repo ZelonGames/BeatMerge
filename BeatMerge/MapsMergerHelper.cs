@@ -55,8 +55,7 @@ namespace BeatMerge
             {
                 if (currentMapLengthInBeats.HasValue)
                 {
-                    double startOffsetInBeats = Rootobject.MSToBeats(customMap.info._beatsPerMinute, customMap.info._difficultyBeatmapSets.First()._difficultyBeatmaps.First()._customData._editorOffset);
-                    double distanceToMove = currentMapLengthInBeats.Value; // - startOffsetInBeats;
+                    double distanceToMove = currentMapLengthInBeats.Value;
                     ItemBase.ItemBase.MoveItems(customMap.map._notes, distanceToMove);
                     if (!ignoringEvents)
                         ItemBase.ItemBase.MoveItems(customMap.map._events, distanceToMove);
@@ -80,9 +79,58 @@ namespace BeatMerge
                 _customData = null
             };
 
-            Info.Rootobject firstSongInfo = currentSongPack.CustomMaps.First().info;
-            firstSongInfo._beatsPerMinute = newBPM;
-            firstSongInfo._songFilename = "song.ogg";
+            var customInfo = new Info.Rootobject()
+            {
+                _version = currentSongPack.CustomMaps.First().info._version,
+                _songName = "Merged",
+                _songSubName = "",
+                _songAuthorName = "Various Artists",
+                _levelAuthorName = "BeatMerge",
+                _beatsPerMinute = newBPM,
+                _shuffle = currentSongPack.CustomMaps.First().info._shuffle,
+                _shufflePeriod = currentSongPack.CustomMaps.First().info._shufflePeriod,
+                _previewStartTime = 10,
+                _previewDuration = 12,
+                _songFilename = "song.ogg",
+                _coverImageFilename = "cover.jpg",
+                _environmentName = currentSongPack.CustomMaps.First().info._environmentName,
+                _songTimeOffset = 0,
+                _customData = currentSongPack.CustomMaps.First().info._customData,
+            };
+
+            var customData = new Info._Customdata1()
+            {
+                _difficultyLabel = "Pack",
+                _editorOffset = currentSongPack.CustomMaps.First().info._difficultyBeatmapSets.First()._difficultyBeatmaps.First()._customData._editorOffset,
+                _editorOldOffset = currentSongPack.CustomMaps.First().info._difficultyBeatmapSets.First()._difficultyBeatmaps.First()._customData._editorOldOffset,
+                _information = currentSongPack.CustomMaps.First().info._difficultyBeatmapSets.First()._difficultyBeatmaps.First()._customData._information,
+                _requirements = currentSongPack.CustomMaps.First().info._difficultyBeatmapSets.First()._difficultyBeatmaps.First()._customData._requirements,
+                _suggestions = currentSongPack.CustomMaps.First().info._difficultyBeatmapSets.First()._difficultyBeatmaps.First()._customData._suggestions,
+                _warnings = currentSongPack.CustomMaps.First().info._difficultyBeatmapSets.First()._difficultyBeatmaps.First()._customData._warnings
+            };
+
+            Info._Difficultybeatmaps[] customDifficultybeatmaps = new Info._Difficultybeatmaps[1];
+            Info._Difficultybeatmaps temp = new Info._Difficultybeatmaps
+            {
+                _difficulty = "ExpertPlus",
+                _difficultyRank = 9,
+                _beatmapFilename = "ExpertPlusStandard.dat",
+                _noteJumpMovementSpeed = currentSongPack.CustomMaps.First().info._difficultyBeatmapSets.First()._difficultyBeatmaps.First()._noteJumpMovementSpeed,
+                _noteJumpStartBeatOffset = currentSongPack.CustomMaps.First().info._difficultyBeatmapSets.First()._difficultyBeatmaps.First()._noteJumpStartBeatOffset,
+                _customData = customData
+            };
+            customDifficultybeatmaps[0] = temp;
+
+            Info._Difficultybeatmapsets[] customdifficultyBeatmapSets = new Info._Difficultybeatmapsets[1];
+            Info._Difficultybeatmapsets tempo = new Info._Difficultybeatmapsets();
+            tempo._beatmapCharacteristicName = "Standard";
+            tempo._difficultyBeatmaps = customDifficultybeatmaps;
+
+            customdifficultyBeatmapSets[0] = tempo;
+
+            customInfo._difficultyBeatmapSets = customdifficultyBeatmapSets;
+
+            Info.Rootobject firstSongInfo = customInfo;
 
             try
             {
