@@ -59,29 +59,17 @@ namespace BeatMerge
             string[] directories = Directory.GetDirectories(path);
 
             if (File.Exists(songPackOrderFile))
-            {
                 news.AddRange(File.ReadAllLines(songPackOrderFile));
-            }
             else
-            {
                 File.Create(songPackOrderFile).Close();
-            }
 
             foreach (var x in directories)
             {
                 if (!news.Contains(x))
-                {
                     news.Add(x);
-                }
             }
 
-            for (int i = 0; i < news.Count(); i++)
-            {
-                if (!directories.Contains(news[i]))
-                {
-                    news.RemoveAt(i);
-                }
-            }
+            news.RemoveAll(x => !directories.Contains(x));
 
             File.WriteAllLines(songPackOrderFile, news);
         }
@@ -96,55 +84,28 @@ namespace BeatMerge
 
 
             if(File.Exists(songPackOrderFile))
-            {
                 news.AddRange(File.ReadAllLines(songPackOrderFile));
-            }
             else
-            {
                 File.Create(songPackOrderFile).Close();
-            }
             
             foreach (var x in directories)
             {
                 if(!news.Contains(x))
-                {
                     news.Add(x);
-                }
             }
 
-            for(int i = 0; i < news.Count(); i++)
-            {
-                if(!directories.Contains(news[i]))
-                {
-                    news.RemoveAt(i);
-                }
-            }
+            news.RemoveAll(x => !directories.Contains(x));
 
             File.WriteAllLines(songPackOrderFile, news);
 
             foreach (var directory in news)
             {
                 string[] files = Directory.GetFiles(directory, "*.dat");
-                string file = null;
-                    
-                foreach (var x in files)
-                {
-                    if (x.Contains("info.dat"))
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        file = x;
-                        break;
-                    }
-                }
+                string file = files.Where(x => !x.Contains("info.dat")).FirstOrDefault();
 
                 // The files are already created so just add it to the listbox
                 if (file != null)
-                {
                     await AddMap(file, DisplayName, false, listMap);
-                }
             }
         }
     }
