@@ -146,7 +146,7 @@ namespace BeatMerge
                     File.Copy(custmMap.audioPath, mergedDirectory + "/" + i + Path.GetExtension(custmMap.audioPath));
                 }
 
-                string difficulty = mergedDirectory + "/" + firstSongInfo._difficultyBeatmapSets.First()._difficultyBeatmaps.First()._beatmapFilename;
+                string difficulty = mergedDirectory + "/" + "ExpertPlusStandard.dat";
                 using (StreamWriter wr = new StreamWriter(difficulty))
                     wr.WriteLine(JsonConvert.SerializeObject(mergedMap));
 
