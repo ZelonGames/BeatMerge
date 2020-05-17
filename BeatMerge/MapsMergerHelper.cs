@@ -39,14 +39,26 @@ namespace BeatMerge
                 if (!ignoringEvents)
                     ItemBase.ItemBase.ConvertItemBeatsToSeconds(customMap.map._events, mergedEvents, customMap.info._beatsPerMinute);
                 if (!ignoringObstacles)
+                {
                     ItemBase.ItemBase.ConvertItemBeatsToSeconds(customMap.map._obstacles, mergedObstacles, customMap.info._beatsPerMinute);
+                    foreach (var item in mergedObstacles)
+                    {
+                        item._duration *= Rootobject.GetBeatLengthInSeconds(customMap.info._beatsPerMinute);
+                    }
+                }
             }
 
             ItemBase.ItemBase.ConvertItemSecondsToBeats(mergedNotes, newBPM);
             if (!ignoringEvents)
                 ItemBase.ItemBase.ConvertItemSecondsToBeats(mergedEvents, newBPM);
             if (!ignoringObstacles)
+            {
                 ItemBase.ItemBase.ConvertItemSecondsToBeats(mergedObstacles, newBPM);
+                foreach (var item in mergedObstacles)
+                {
+                    item._duration = Rootobject.SecondsToBeats(newBPM, item._duration);
+                }
+            }
             //////////////////////////////////////////////////////////////////////////
 
             // Move the notes behind the current map
