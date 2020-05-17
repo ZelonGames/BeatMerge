@@ -25,15 +25,15 @@ namespace BeatMerge
 
         public CustomMap(string selectedFile, string selectedSongPackName, bool createFile)
         {
-            selectedSongPackName = selectedSongPackName.Replace("\\", "/");
+            selectedSongPackName = selectedSongPackName.Replace("\\", "\\");
                difficultyPath = selectedFile.Replace("\\", "/");
             string[] folders = difficultyPath.Split('/');
-            directoryPath = selectedSongPackName + "/" + folders[folders.Length - 2];
+            directoryPath = selectedSongPackName + "\\" + folders[folders.Length - 2];
 
             string[] selectedPathFolders = selectedFile.Split('\\');
             string selectedDirectoryPath = selectedFile.Replace(selectedPathFolders.Last(), "").Replace("\\", "/");
             string infoFile = selectedDirectoryPath + "info.dat";
-            infoPath = directoryPath + "/info.dat";
+            infoPath = directoryPath + "\\info.dat";
 
             if (createFile)
             {
